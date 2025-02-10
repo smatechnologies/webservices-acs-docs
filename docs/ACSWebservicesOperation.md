@@ -92,7 +92,7 @@ Enter details for Task Type **BASICTOKEN**.
 4.  In the **Response Variable** section
     - define the variable that will contain the token. The format is name=value where the name part will be the schedule instance property name, the value part is ignored. 
 
-### OpConTOKEN Task
+### OPCONTOKEN Task
 
 The OPCONTOKEN task is used to set an OpCon token as a schedule instance property so it can be used to provide authentication by subsequent tasks. 
 The function allows the selection of a ACSWebservices Batch User to provide the OpCon encoded authentication string.   
@@ -125,6 +125,46 @@ Enter details for Task Type **OPCONTOKEN**.
     The format of the field definition is variable-name=jsonpath (i.e. opconToken=$.id) where
     - variable-name is the name of the variable that will be created as a schedule instance property.
     - jsonpath is the attribute value to extract from the returned JSON data using JPath notation - enter **$.id** 
+
+### OAUTH2TOKEN Task
+
+TheOAUTH2TOKEN task is used to set an OAuth2 token as a schedule instance property so it can be used to provide authentication by subsequent tasks. 
+
+![Defining an OAUTH2TOKEN Master Job](../static/img/ws-oauth2token-master-job1.png)
+
+1.  Open Solution Manager.
+2.  From the Home page select **Library**
+3.  From the ***Administration*** Menu select **Master Jobs**.
+4.  Select **+Add** to add a new master job definition.
+5.  Fill in the task details.
+    - Select the **Schedule** name from the drop-down list.
+    - In the **Name** field enter a unique name for the task within the schedule.
+    - Select **ACSWebservices** from the **Job Type** drop-down list.
+    - Select **OAUTH2TOKEN** from the **Task Type** drop-down list.
+    
+Enter details for Task Type **OAUTH2TOKEN**. 
+
+1.  Select the **Task Details** button.
+2.  In the **Integration Selection** section, select the primary integration which is an ACSWebservices connection previously defined.
+    - In the **URL** field enter the full address of the end point using global properties (i.e. https://login.microsoftonline.com/[[tenantid]]/oauth2/token). 
+3.  In the **Authentication** section
+    - In the **ClientId** field enter the provided client id (use a global or an encrypted global property to safe guard the client id).
+    - In the **KeyId** field enter the provided key (use a global or an encrypted global property to safe guard the key).
+    - In the **Resource** field enter the resource the authentication request is for. The example shows an Azure Storage authentication request
+      (https://[[dataserver]].blob.storage.net).
+    - In the **Grant Type** field select ***client_credentials*** from the drop-down list.
+
+![Defining an OAUTH2TOKEN Master Job](../static/img/ws-oauth2token-master-job2.png)
+
+4.  In the **Request** section enter the following information
+    - Select the **Content** from the drop-down list (application/x-wwww-form-urlencoded).   
+5.  In the **Response** section
+    - Select the **Content** from the drop-down list (application/json).   
+    - In **Response Variables** define a variable to contain data extracted from the returned JSON data. The extracted data will be 
+    stored as a schedule instance property in the schedule making the extracted information available to subsequent tasks. 
+    The format of the field definition is variable-name=jsonpath (i.e. oauthToken=$.id) where
+    - variable-name is the name of the variable that will be created as a schedule instance property.
+    - jsonpath is ignored as default value of access_token is used.
 
 ### GET Task
 
