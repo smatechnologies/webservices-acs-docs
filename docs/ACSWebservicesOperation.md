@@ -1,16 +1,16 @@
 ---
 slug: '/'
-sidebar_label: 'ACSWebservices Operation'
+sidebar_label: 'ACS Webservices Operation'
 ---
 
-# ACSWebservices Operation
+# ACS Webservices Operation
 
 Once the sma.acs.ACSWebservices plugin has been registered with the OpCon system, it will be possible to perform agent and task definitions.
 All definitions can only be performed using Solution Manager.
 
-## Defining ACSWebservices Batch Users
+## Defining ACS Webservices Batch Users
 
-The ACSWebservices task types BASICTOKEN and OPCONTOKEN uses opCon Batch users to define the user information for these task types.
+The ACS Webservices task types BASICTOKEN and OPCONTOKEN uses opCon Batch users to define the user information for these task types.
 Before creating these task types, ensure that the appropriate Batch Users are created.  
 
 ![Defining a Batch User](../static/img/ws-batch-user.png)
@@ -19,12 +19,12 @@ Before creating these task types, ensure that the appropriate Batch Users are cr
 2.  From the Home page select **Library**
 3.  From the ***Security*** Menu select **Batch Users**.
 4.  Select **+Add** to add a new Batch User.
-5.  Select **ACSWebservices** from the ***Select the target OS*** drop-down list.
+5.  Select **ACS Webservices** from the ***Select the target OS*** drop-down list.
 6.  Enter the User name that will be used to create the token in the **Identifier** field.
 7.  Enter the password of the defined API User in the **Password** and **Confirm** fields.
 8.  Select **Save**.
 
-## Defining ACSWebservices connection
+## Defining ACS Webservices connection
 
 The Agent definition is defined by adding a new ACSWebservices Agent definition using Solution Manager.
 Items defined in red are required values.
@@ -37,8 +37,8 @@ Items defined in red are required values.
 4.  Select **+Add** to add a new agent definition.
 5.  Fill in the agent details
     - Insert a unique name for the connection.
-    - Select **ACSWebservices** from the **Type** drop-down list.
-    - Select **ACSWebservices Settings**
+    - Select **ACS Webservices** from the **Type** drop-down list.
+    - Select **ACS Webservices Settings**
     - In the **OpCon URL** field enter the full url for the associated OpCon Rest-API server.
     - In the **OpCon Token** field enter a valid OpCon application token that will be used to authenticate internal OpCon Rest-API requests.
     - In the **Proxy Url** field enter the full url of the Proxy Server if required when submitting url requests outside the organization.  
@@ -47,7 +47,7 @@ Items defined in red are required values.
 
 ## Defining tasks
 
-The ACSWebservices Connection supports the following task types:
+The ACS Webservices Connection supports the following task types:
 
 TaskType             | Description
 ---------------------|------------
@@ -69,7 +69,7 @@ Data is passed between tasks using schedule instance properties. The ACS environ
 ### BASICTOKEN Task
 
 The BASICTOKEN task is used to set a basic token as a schedule instance property so it can be used to provide authentication by subsequent tasks. 
-The function allows the selection of a ACSWebservices Batch User to provide the base64 encoded authentication string.   
+The function allows the selection of a ACS Webservices Batch User to provide the base64 encoded authentication string.   
 
 ![Defining a BASICTOKEN Master Job](../static/img/ws-basictoken-master-job.png)
 
@@ -80,13 +80,13 @@ The function allows the selection of a ACSWebservices Batch User to provide the 
 5.  Fill in the task details.
     - Select the **Schedule** name from the drop-down list.
     - In the **Name** field enter a unique name for the task within the schedule.
-    - Select **ACSWebservices** from the **Job Type** drop-down list.
+    - Select **ACS Webservices** from the **Job Type** drop-down list.
     - Select **BASICTOKEN** from the **Task Type** drop-down list.
     
 Enter details for Task Type **BASICTOKEN**. 
 
 1.  Select the **Task Details** button.
-2.  In the **Integration Selection** section, select the primary integration which is an ACSWebservices connection previously defined.
+2.  In the **Integration Selection** section, select the primary integration which is an ACS Webservices connection previously defined.
 3.  In the **Authentication** section
     - select a Batch User from the drop-down list.
 4.  In the **Response Variable** section
@@ -95,7 +95,7 @@ Enter details for Task Type **BASICTOKEN**.
 ### OPCONTOKEN Task
 
 The OPCONTOKEN task is used to set an OpCon token as a schedule instance property so it can be used to provide authentication by subsequent tasks. 
-The function allows the selection of a ACSWebservices Batch User to provide the OpCon encoded authentication string.   
+The function allows the selection of a ACS Webservices Batch User to provide the OpCon encoded authentication string.   
 
 ![Defining an OPCONTOKEN Master Job](../static/img/ws-opcontoken-master-job.png)
 
@@ -106,13 +106,13 @@ The function allows the selection of a ACSWebservices Batch User to provide the 
 5.  Fill in the task details.
     - Select the **Schedule** name from the drop-down list.
     - In the **Name** field enter a unique name for the task within the schedule.
-    - Select **ACSWebservices** from the **Job Type** drop-down list.
+    - Select **ACS Webservices** from the **Job Type** drop-down list.
     - Select **OPCONTOKEN** from the **Task Type** drop-down list.
     
 Enter details for Task Type **OPCONTOKEN**. 
 
 1.  Select the **Task Details** button.
-2.  In the **Integration Selection** section, select the primary integration which is an ACSWebservices connection previously defined.
+2.  In the **Integration Selection** section, select the primary integration which is an ACS Webservices connection previously defined.
 3.  In the **Authentication** section
     - In the **URL** field enter the full address of the end point (i.e. https://server:port/api/tokens). 
     - Select a Batch User from the drop-down list.
@@ -139,13 +139,13 @@ TheOAUTH2TOKEN task is used to set an OAuth2 token as a schedule instance proper
 5.  Fill in the task details.
     - Select the **Schedule** name from the drop-down list.
     - In the **Name** field enter a unique name for the task within the schedule.
-    - Select **ACSWebservices** from the **Job Type** drop-down list.
+    - Select **ACS Webservices** from the **Job Type** drop-down list.
     - Select **OAUTH2TOKEN** from the **Task Type** drop-down list.
     
 Enter details for Task Type **OAUTH2TOKEN**. 
 
 1.  Select the **Task Details** button.
-2.  In the **Integration Selection** section, select the primary integration which is an ACSWebservices connection previously defined.
+2.  In the **Integration Selection** section, select the primary integration which is an ACS Webservices connection previously defined.
     - In the **URL** field enter the full address of the end point using global properties (i.e. https://login.microsoftonline.com/[[tenantid]]/oauth2/token). 
 3.  In the **Authentication** section
     - In the **ClientId** field enter the provided client id (use a global or an encrypted global property to safe guard the client id).
@@ -183,7 +183,7 @@ ABC.
 5.  Fill in the task details.
     - Select the **Schedule** name from the drop-down list.
     - In the **Name** field enter a unique name for the task within the schedule.
-    - Select **ACSWebservices** from the **Job Type** drop-down list.
+    - Select **ACS Webservices** from the **Job Type** drop-down list.
     - Select **GET** from the **Task Type** drop-down list.
     
 Enter details for Task Type **GET**. 
@@ -191,7 +191,7 @@ Enter details for Task Type **GET**.
 ![Defining a GET Master Job](../static/img/ws-get-master-job1.png)
 
 1.  Select the **Task Details** button.
-2.  In the **Integration Selection** section, select the primary integration which is an ACSWebservices connection previously defined.
+2.  In the **Integration Selection** section, select the primary integration which is an ACS Webservices connection previously defined.
 3.  In the **Task Configuration** section
     - In **Variables** define name value pairs that can be used for substitution in url and message bodies. 
     - In the **Url** field enter the full address of the end point (i.e. https://server:port/api/tokens). 
@@ -238,7 +238,7 @@ task should be in a 'hold' state.  The remote system would then include the capa
 5.  Fill in the task details.
     - Select the **Schedule** name from the drop-down list.
     - In the **Name** field enter a unique name for the task within the schedule.
-    - Select **ACSWebservices** from the **Job Type** drop-down list.
+    - Select **ACS Webservices** from the **Job Type** drop-down list.
     - Select **POST** from the **Task Type** drop-down list.
     
 Enter details for Task Type **POST**. 
@@ -246,7 +246,7 @@ Enter details for Task Type **POST**.
 ![Defining a POST Master Job](../static/img/ws-post-master-job1.png)
 
 1.  Select the **Task Details** button.
-2.  In the **Integration Selection** section, select the primary integration which is an ACSWebservices connection previously defined.
+2.  In the **Integration Selection** section, select the primary integration which is an ACS Webservices connection previously defined.
 3.  In the **Task Configuration** section
     - In **Variables** define name value pairs that can be used for substitution in url and message bodies. 
     - In the **Url** field enter the full address of the end point (i.e. https://server:port/api/tokens). 
@@ -291,7 +291,7 @@ ABC.
 5.  Fill in the task details.
     - Select the **Schedule** name from the drop-down list.
     - In the **Name** field enter a unique name for the task within the schedule.
-    - Select **ACSWebservices** from the **Job Type** drop-down list.
+    - Select **ACS Webservices** from the **Job Type** drop-down list.
     - Select **PUT** from the **Task Type** drop-down list.
     
 Enter details for Task Type **PUT**. 
@@ -299,7 +299,7 @@ Enter details for Task Type **PUT**.
 ![Defining a PUT Master Job](../static/img/ws-put-master-job1.png)
 
 1.  Select the **Task Details** button.
-2.  In the **Integration Selection** section, select the primary integration which is an ACSWebservices connection previously defined.
+2.  In the **Integration Selection** section, select the primary integration which is an ACS Webservices connection previously defined.
 3.  In the **Task Configuration** section
     - In **Variables** define name value pairs that can be used for substitution in url and message bodies. 
     - In the **Url** field enter the full address of the end point (i.e. https://server:port/api/tokens). 
@@ -344,15 +344,15 @@ ABC.
 5.  Fill in the task details.
     - Select the **Schedule** name from the drop-down list.
     - In the **Name** field enter a unique name for the task within the schedule.
-    - Select **ACSWebservices** from the **Job Type** drop-down list.
-    - Select **PTCH** from the **Task Type** drop-down list.
+    - Select **AC SWebservices** from the **Job Type** drop-down list.
+    - Select **PATCH** from the **Task Type** drop-down list.
     
 Enter details for Task Type **PATCH**. 
 
 ![Defining a PATCH Master Job](../static/img/ws-patch-master-job1.png)
 
 1.  Select the **Task Details** button.
-2.  In the **Integration Selection** section, select the primary integration which is an ACSWebservices connection previously defined.
+2.  In the **Integration Selection** section, select the primary integration which is an ACS Webservices connection previously defined.
 3.  In the **Task Configuration** section
     - In **Variables** define name value pairs that can be used for substitution in url and message bodies. 
     - In the **Url** field enter the full address of the end point (i.e. https://server:port/api/tokens). 
@@ -392,7 +392,7 @@ The DELETE task should have a dependency set on the authentication task.
 5.  Fill in the task details.
     - Select the **Schedule** name from the drop-down list.
     - In the **Name** field enter a unique name for the task within the schedule.
-    - Select **ACSWebservices** from the **Job Type** drop-down list.
+    - Select **ACS Webservices** from the **Job Type** drop-down list.
     - Select **DELETE** from the **Task Type** drop-down list.
     
 Enter details for Task Type **DELETE**. 
@@ -400,7 +400,7 @@ Enter details for Task Type **DELETE**.
 ![Defining a DELETE Master Job](../static/img/ws-delete-master-job.png)
 
 1.  Select the **Task Details** button.
-2.  In the **Integration Selection** section, select the primary integration which is an ACSWebservices connection previously defined.
+2.  In the **Integration Selection** section, select the primary integration which is an ACS Webservices connection previously defined.
 3.  In the **Task Configuration** section
     - In **Variables** define name value pairs that can be used for substitution in url and message bodies. Defining SERVER=DESKTOPA will
     replace the value SERVER in the url and message body with value DESKTOPA.  
