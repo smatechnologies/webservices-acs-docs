@@ -7,7 +7,7 @@ sidebar_label: 'WebServices ACS'
 
 Latest version is 25.0.0
 
-WebServices ACS provides direct Rest-API access to applications without the need for the installation of additional components.
+ACS WebServices provides direct Rest-API access to applications without the need for the installation of additional components.
 It is part of the ACS (Agentless Connector System) suite of products. 
 
 ACS is a new OpCon Agent type that provides a framework for agent development. It is an internal component provided by the SMANetCom module. 
@@ -48,12 +48,12 @@ Examaples
 
 ## Implementation
 
-WebService ACS comprises of two separate environments ACSWebservices and ACSAzureWebservices.
+WebService ACS comprises of two separate environments ACS Webservices and ACS AzureWebservices.
 
 Provides jobtypes that can be used to create task definitions. Each jobtype is a separate OpCon task and information is passed between tasks using the
 capabilities of the ACS framework (information passed between tasks are saved as Schedule Instance properties).  
 
-## ACSAzureWebservices
+## ACS AzureWebservices
 Provides defined integrations with the MicroSoft Azure environment. Includes authentication tasks and tasks to start DevOps pipelines and Upload and Download files to/from Azure storage.
 The following job-types are currently available.
 
@@ -65,7 +65,7 @@ RunDevOpsPipeline    | Starts an Azure DevOps pipeline and monitors for completi
 DownloadBlobStorage  | Download a file from Azure Blob Storage
 UploadBlobStorage    | Upload a file to Azure Blob Storage
 
-## ACSWebservices
+## ACS Webservices
 Provides generic implementations for authentication and standard GET, POST, PUT, PATCH and DELETE functions.
 
 JobType              | Description

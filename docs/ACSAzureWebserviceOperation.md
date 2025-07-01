@@ -3,12 +3,12 @@ slug: '/'
 sidebar_label: 'ACSAzureWebservices Operation'
 ---
 
-# ACSAzureWebservices Operation
+# ACS AzureWebservices Operation
 
 Once the sma.acs.ACSAzureWebservices plugin has been registered with the OpCon system, it will be possible to perform agent and task definitions.
 All definitions can only be performed using Solution Manager.
 
-## Defining ACSAzureWebservices connection
+## Defining ACS AzureWebservices connection
 
 The Agent definition is defined by adding a new ACSAzureWebservices Agent definition using Solution Manager.
 Items defined in red are required values.
@@ -21,15 +21,15 @@ Items defined in red are required values.
 4.  Select **+Add** to add a new agent definition.
 5.  Fill in the agent details
     - Insert a unique name for the connection.
-    - Select **ACSAzureWebservices** from the **Type** drop-down list.
-    - Select **ACSAzureWebservices Settings**
+    - Select **ACS AzureWebservices** from the **Type** drop-down list.
+    - Select **ACS AzureWebservices Settings**
     - The **Azure URL** field contains a default value ***azure.status.microsoft/en-us/status*** which is used as a heartbeat to check if the Azure environment is available. 
 6.  Save the definition changes. 
 7.  Start the connection by selecting the **Change Communication Status** button and selecting **Enable Full Comm.**. 
 
 ## Defining tasks
 
-The ACSAzureWebservices Connection supports the following task types:
+The ACS AzureWebservices Connection supports the following task types:
 
 TaskType             | Description
 ---------------------|------------
@@ -56,7 +56,7 @@ The GetOAuth2Token task is used to get an OAuth2 token and set it as a schedule 
 5.  Fill in the task details.
     - Select the **Schedule** name from the drop-down list.
     - In the **Name** field enter a unique name for the task within the schedule.
-    - Select **ACSAzureWebservices** from the **Job Type** drop-down list.
+    - Select **ACS AzureWebservices** from the **Job Type** drop-down list.
     - Select **GetOAuth2Token** from the **Task Type** drop-down list.
     
 Enter details for Task Type **GetOAuth2Token**. 
@@ -91,13 +91,13 @@ The GetPatToken task is used to set a PAT token as a schedule instance property 
 5.  Fill in the task details.
     - Select the **Schedule** name from the drop-down list.
     - In the **Name** field enter a unique name for the task within the schedule.
-    - Select **ACSAzureWebservices** from the **Job Type** drop-down list.
+    - Select **ACS AzureWebservices** from the **Job Type** drop-down list.
     - Select **GetPatToken** from the **Task Type** drop-down list.
     
 Enter details for Task Type **GetPatToken**. 
 
 1.  Select the **Task Details** button.
-2.  In the **Integration Selection** section, select the primary integration which is an ACSAzureWebservices connection previously defined.
+2.  In the **Integration Selection** section, select the primary integration which is an ACS AzureWebservices connection previously defined.
 3.  In the **Authentication** section, enter a PAT (Personal Action Token) retrieved from the Azure DevOps environment (see https://learn.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate?view=azure-devops&tabs=Windows for information on how to create a PAT).
 4.  In the **Response Variable** section, define the variable that will contain the PAT token. The format is name=value where the name part will be the schedule instance property name, the value part is ignored. 
 
@@ -115,13 +115,13 @@ A Job Dependency should be defined on a previous **GetPatToken** task.
 5.  Fill in the task details.
     - Select the **Schedule** name from the drop-down list.
     - In the **Name** field enter a unique name for the task within the schedule.
-    - Select **ACSAzureWebservices** from the **Job Type** drop-down list.
+    - Select **ACS AzureWebservices** from the **Job Type** drop-down list.
     - Select **RunDevOpsPipeline** from the **Task Type** drop-down list.
     
 Enter details for Task Type **RunDevOpsPipeline**. Fields marked in red must be provided.
 
 1.  Select the **Task Details** button.
-2.  In the **Integration Selection** section, select the primary integration which is an ACSAzureWebservices connection previously defined.
+2.  In the **Integration Selection** section, select the primary integration which is an ACS AzureWebservices connection previously defined.
 3.  In the **Job Configuration** section enter the following information
     - In the **Azure Url** field enter ***dev.azure.com***.
     - In the **Organization** field enter the name of the DevOps Organization.
@@ -154,13 +154,13 @@ A Job Dependency should be defined on a previous **GetOAuth2Token** task.
 5.  Fill in the task details.
     - Select the **Schedule** name from the drop-down list.
     - In the **Name** field enter a unique name for the task within the schedule.
-    - Select **ACSAzureWebservices** from the **Job Type** drop-down list.
+    - Select **ACS AzureWebservices** from the **Job Type** drop-down list.
     - Select **DownloadBlobStorage** from the **Task Type** drop-down list.
     
 Enter details for Task Type **UploadBlobStorage**. Fields marked in red must be provided.
 
 1.  Select the **Task Details** button.
-2.  In the **Integration Selection** section, select the primary integration which is an ACSAzureWebservices connection previously defined.
+2.  In the **Integration Selection** section, select the primary integration which is an ACS AzureWebservices connection previously defined.
 3.  In the **DownloadAzureBlob** section enter the following information
     - In the **Storage Account** field enter the name of the storage account.
     - In the **Path** field enter the path of the file to be downloaded from the storage area. The value consists of
@@ -184,13 +184,13 @@ A Job Dependency should be defined on a previous **GetOAuth2Token** task.
 5.  Fill in the task details.
     - Select the **Schedule** name from the drop-down list.
     - In the **Name** field enter a unique name for the task within the schedule.
-    - Select **ACSAzureWebservices** from the **Job Type** drop-down list.
+    - Select **ACS AzureWebservices** from the **Job Type** drop-down list.
     - Select **UploadBlobStorage** from the **Task Type** drop-down list.
     
 Enter details for Task Type **UploadBlobStorage**. Fields marked in red must be provided.
 
 1.  Select the **Task Details** button.
-2.  In the **Integration Selection** section, select the primary integration which is an ACSAzureWebservices connection previously defined.
+2.  In the **Integration Selection** section, select the primary integration which is an ACS AzureWebservices connection previously defined.
 3.  In the **UploadAzureBlob** section enter the following information
     - In the **Storage Account** field enter the name of the storage account.
     - In the **Path** field enter the path where the file must be placed within the storage area. The value consists of
