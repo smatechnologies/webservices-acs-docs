@@ -32,7 +32,7 @@ module.exports = {
           routeBasePath: '/',
           sidebarPath: require.resolve('./sidebars.js'),
           editUrl:
-            'https://github.com/smatechnologies/webservices-acs/blob/main',
+            'https://github.com/smatechnologies/webservices-acs-docs/blob/main',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
