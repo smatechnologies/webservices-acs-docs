@@ -3,7 +3,7 @@ module.exports = {
   title: 'SMA Technologies Help',
   tagline: 'WebServices ACS',
   url: 'https://help.smatechnologies.com',
-  baseUrl: '/opcon/conenctors/webservices-acs/',
+  baseUrl: '/opcon/connectors/webservices-acs/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
