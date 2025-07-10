@@ -1,6 +1,6 @@
 ---
 slug: '/'
-sidebar_label: 'ACSAzureWebservices Operation'
+sidebar_label: 'ACS AzureWebservices Operation'
 ---
 
 # ACS AzureWebservices Operation
@@ -10,7 +10,7 @@ All definitions can only be performed using Solution Manager.
 
 ## Defining ACS AzureWebservices connection
 
-The Agent definition is defined by adding a new ACSAzureWebservices Agent definition using Solution Manager.
+The Agent definition is defined by adding a new ACS AzureWebservices Agent definition using Solution Manager.
 Items defined in red are required values.
 
 ![Defining a Connection](../static/img/azure-ws-agent.png)
