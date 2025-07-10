@@ -5,6 +5,7 @@ sidebar_label: 'WebServices ACS'
 
 # WebServices ACS Documentation
 
+
 Latest version is 25.0.0
 
 ACS WebServices provides direct Rest-API access to applications without the need for the installation of additional components.
