@@ -30,13 +30,14 @@ Items defined in red are required values.
 
 The ACS AzureWebservices Connection supports the following task types:
 
-TaskType             | Description
----------------------|------------
-GetOAuth2Token       | Get an OAuth2 token 
-GetPatToken          | Create a Azure DevOps authentication token using a PAT (Personal Access Token)
-RunDevOpsPipeline    | Starts an Azure DevOps pipeline and monitors for completion
-DownloadBlobStorage  | Download a file from Azure Blob Storage
-UploadBlobStorage    | Upload a file to Azure Blob Storage
+JobType                | Description
+-----------------------|------------
+GetOAuth2Token         | Get an OAuth2 token 
+GetPatToken            | Create a Azure DevOps authentication token using a PAT (Personal Access Token)
+RunDevOpsPipeline      | Starts an Azure DevOps pipeline and monitors for completion
+RunDataFactoryPipeline | Starts an MS DataFactory pipeline and monitors for completion
+DownloadBlobStorage    | Download a file from Azure Blob Storage
+UploadBlobStorage      | Upload a file to Azure Blob Storage
 
 Before defining a **RunDevOpsPipeline** task, a **GetPatToken** task must be defined to create the authorization token required by the RunDevOpsPipeline Task. Similarly before defining the **DownloadBlobStorage** or **UploadBlobStorage** tasks a **GetOAuth2Token** must be defines to create the autherization task required by the DownloadBlobStorage and UploadBlobStorage tasks.
 
@@ -138,6 +139,47 @@ Enter details for Task Type **RunDevOpsPipeline**. Fields marked in red must be 
     - jsonpath is the attribute value to extract from the returned JSON data using JPath notation 
     (i.e. ***$.id*** indicates extract the value of the first ***id*** attribute in the returned JSON,
           ***$.[0].id*** indicates extract the value of the first ***id*** attribute from the first record in the returned JSONArray).
+
+### RunDataFactoryPipeline Task
+
+The RunDataFactoryPipeline task is used to start a MS DataFactory pipeline and monitor the started task for completion. 
+A Job Dependency should be defined on a previous **GetOAuth2Token** task.   
+
+![Defining a RunDataFactoryPipeline Master Job](../static/img/azure-ws-rundatafactorypipeline-master-job.png)
+
+1.  Open Solution Manager.
+2.  From the Home page select **Library**
+3.  From the ***Administration*** Menu select **Master Jobs**.
+4.  Select **+Add** to add a new master job definition.
+5.  Fill in the task details.
+    - Select the **Schedule** name from the drop-down list.
+    - In the **Name** field enter a unique name for the task within the schedule.
+    - Select **ACS AzureWebservices** from the **Job Type** drop-down list.
+    - Select **RunDataFactoryPipeline** from the **Task Type** drop-down list.
+    
+Enter details for Task Type **RunDataFactoryPipeline**. Fields marked in red must be provided.
+
+1.  Select the **Task Details** button.
+2.  In the **Integration Selection** section, select the primary integration which is an ACS AzureWebservices connection previously defined.
+3.  In the **Job Configuration** section enter the following information
+    - In the **Data Factory Url** field enter ***management.azure.com/subscription***.
+    - In the **Subscription** field enter your DevOps Subscription id.
+    - In the **Resource Group Name** field enter the name of resource group where the Data Factory is defined.
+    - In the **Data Factory Name** field enter the name of the Data Factory.
+    - In the **Pipeline Name** field, enter the name of the Data Factory pipeline to execute.
+    - If wishing to run a specific pipeline with the parameters of a previous execution, enter the runid of the pipeline in the **Pipeline Runid** field.
+    - If Run Parameters are required, enter a name associated with the parameters in the **Name** field of the **Run Parameters** section.
+    - To add parameters, enter the parameter value in the **Run Parameter** field. To additional parameters, select the **+Add Item** button and enter the parameter value. 
+
+4.  In the **Request** section enter the following information
+    - Select the **Content** from the drop-down list (application/json).
+    - In the **Header Attributes** section, add an ***Authorization=name*** where the name portion is the name portion assigned to contain the OAuth2 token in a previous GetOAuth2Token task.
+
+For Pipeline recovery purposes, the **Pipeline Recovery** section can be used to restart a Pipeline.
+- Select the **Recovery** checkbox and then configure the recovery options.
+- To restart from a specific point enter the restart point in the **Start Activity Name**.
+- To restart from the beginning leave the **Start Activity Name** empty and do not select the **Start From Failure** checkbox.
+- To restart from the failed position, select the **Start From Failure** checkbox. 
 
 ### DownloadStorageBlob Task
 
