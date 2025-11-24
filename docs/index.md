@@ -5,7 +5,8 @@ sidebar_label: 'WebServices ACS'
 
 # WebServices ACS Documentation
 
-Latest version is 25.0.0
+Latest version for ACS WebServices is 25.0.0.
+Latest version for ACS AzureWebServices is 25.0.1.
 
 ACS WebServices provides direct Rest-API access to applications without the need for the installation of additional components.
 It is part of the ACS (Agentless Connector System) suite of products. 
@@ -31,7 +32,7 @@ executed as a separate task. Information is passed between tasks using the ACS S
 To save data, use the **Response Variables** section to define the name of the data variable and the associated value. The data variable name can then 
 be used in the urls and message body of subsequent tasks.
 
-Examaples
+Examples
 
 1. Need to pass the id returned from a POST request to obtain the status of a the request on a subsequent task.
    - on POST request task define a response variable taskId=$.task.id
@@ -57,13 +58,14 @@ capabilities of the ACS framework (information passed between tasks are saved as
 Provides defined integrations with the MicroSoft Azure environment. Includes authentication tasks and tasks to start DevOps pipelines and Upload and Download files to/from Azure storage.
 The following job-types are currently available.
 
-JobType              | Description
----------------------|------------
-GetOAuth2Token       | Get an OAuth2 token 
-GetPatToken          | Create a Azure DevOps authentication token using a PAT (Personal Access Token)
-RunDevOpsPipeline    | Starts an Azure DevOps pipeline and monitors for completion
-DownloadBlobStorage  | Download a file from Azure Blob Storage
-UploadBlobStorage    | Upload a file to Azure Blob Storage
+JobType                | Description
+-----------------------|------------
+GetOAuth2Token         | Get an OAuth2 token 
+GetPatToken            | Create a Azure DevOps authentication token using a PAT (Personal Access Token)
+RunDevOpsPipeline      | Starts an Azure DevOps pipeline and monitors for completion
+RunDataFactoryPipeline | Starts an MS DataFactory pipeline and monitors for completion
+DownloadBlobStorage    | Download a file from Azure Blob Storage
+UploadBlobStorage      | Upload a file to Azure Blob Storage
 
 ## ACS Webservices
 Provides generic implementations for authentication and standard GET, POST, PUT, PATCH and DELETE functions.
