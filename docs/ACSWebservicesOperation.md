@@ -37,12 +37,17 @@ Items defined in red are required values.
 5.  Fill in the agent details
     - Insert a unique name for the connection.
     - Select **ACS Webservices** from the **Type** drop-down list.
+    - Select **General Settings**
+    - In the **NetCom** field enter **\<Default\>** or a Netcom or Relay name.
     - Select **ACS Webservices Settings**
     - In the **OpCon URL** field enter the full url for the associated OpCon Rest-API server.
     - In the **OpCon Token** field enter a valid OpCon application token that will be used to authenticate internal OpCon Rest-API requests.
     - In the **Proxy Url** field enter the full url of the Proxy Server if required when submitting url requests outside the organization.  
 6.  Save the definition changes. 
-7.  Start the connection by selecting the **Change Communication Status** button and selecting **Enable Full Comm.**. 
+7.  Select **Communications Settings**
+    - ensure that **Requires XML Escape Sequences:User-Defined** field is set to **True**.
+    Save the definition changes.
+8.  Start the connection by selecting the **Change Communication Status** button and selecting **Enable Full Comm.**. 
 
 ## Defining tasks
 

@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'INstallation'
+sidebar_label: 'Installation'
 ---
 
 # ACS Installation

@@ -21,10 +21,15 @@ Items defined in red are required values.
 5.  Fill in the agent details
     - Insert a unique name for the connection.
     - Select **ACS AzureWebservices** from the **Type** drop-down list.
+    - Select **General Settings**
+    - In the **NetCom** field enter **\<Default\>** or a Netcom or Relay name.
     - Select **ACS AzureWebservices Settings**
     - The **Azure URL** field contains a default value ***azure.status.microsoft/en-us/status*** which is used as a heartbeat to check if the Azure environment is available. 
 6.  Save the definition changes. 
-7.  Start the connection by selecting the **Change Communication Status** button and selecting **Enable Full Comm.**. 
+7.  Select **Communications Settings**
+    - ensure that **Requires XML Escape Sequences:User-Defined** field is set to **True**.
+    Save the definition changes.
+8.  Start the connection by selecting the **Change Communication Status** button and selecting **Enable Full Comm.**. 
 
 ## Defining tasks
 
