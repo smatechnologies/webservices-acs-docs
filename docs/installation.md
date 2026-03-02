@@ -1,10 +1,10 @@
 ---
-sidebar_label: 'INstallation'
+sidebar_label: 'Installation'
 ---
 
 # ACS Installation
 
-Download the ACS Webservices software from the SMA FTP Site.
+Download the ACSAzureWebservices.zip or the ACSWebservices.zip file from the SMA FTP Site.
 Location will be in
 **/OpCon Releases/Integrations/Webservices/** 
 **/OpCon Releases/Integrations/AzureWebservices/** 
@@ -19,9 +19,9 @@ Select the required version.
   Copy the ACSAzureWebservices\ACSWebservices directory to the \\Relay\\plugins directory
   Restart the **SMA OpCon Relay** service.
 
-# FiservDNA ACS Upgrade
+# ACS Upgrade
 
-Download the ACS FiservDNA selected software upgrade from the SMA FTP Site.
+Download the ACSAzureWebservices.zip or the ACSWebservices.zip file from the SMA FTP Site.
 Location will be in
 **/OpCon Releases/Integrations/Webservices/** 
 **/OpCon Releases/Integrations/AzureWebservices/** 
