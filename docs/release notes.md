@@ -12,6 +12,18 @@ All information required for the integration is contained in the sma.acs.ACSAzur
 
 The plugin contains the dynamic screen definitions using json schemas that are used to display the connection and task definition requirements. 
 
+## ACS Webservices Release 25.0.2
+
+**Fixes**
+
+:eight_spoked_asterisk: **CON-1477**: Correct old log file deletion.
+
+## ACS AzureWebservices Release 25.0.3
+
+**Fixes**
+
+:eight_spoked_asterisk: **CON-1478**: Correct old log file deletion.
+
 ## ACS AzureWebservices Release 25.0.2
 
 The ACS AzureWebservices includes a new capability.
