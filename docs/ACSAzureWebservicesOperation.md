@@ -1,287 +1,302 @@
 ---
-sidebar_label: 'ACS AzureWebservices Operation'
+title: ACS AzureWebservices operation
+description: "Configure the ACS AzureWebservices connector in Solution Manager to define agents and job types that interact with Azure services including DevOps, Data Factory, Key Vault, and Blob Storage."
+tags:
+  - Procedural
+  - Automation Engineer
+  - System Administrator
+  - Agents
+  - Jobs
 ---
 
-# ACS AzureWebservices Operation
+# ACS AzureWebservices operation
 
-Once the sma.acs.ACSAzureWebservices plugin has been registered with the OpCon system, it will be possible to perform agent and task definitions.
-All definitions can only be performed using Solution Manager.
+**Theme:** Configure
+**Who is it for?** Automation Engineer, System Administrator
 
-## Defining ACS AzureWebservices connection
+## What is it?
 
-The Agent definition is defined by adding a new ACS AzureWebservices Agent definition using Solution Manager.
-Items defined in red are required values.
+The ACS AzureWebservices connector enables OpCon jobs to interact with Microsoft Azure services as part of automated schedules. Once the connector is registered with OpCon, you can define an agent connection and create jobs that run Azure DevOps pipelines, run Data Factory pipelines, retrieve values from Azure Key Vault, and upload or download files from Azure Blob Storage.
+
+- Use this connector when you need to integrate OpCon with Azure services such as Azure DevOps, Azure Data Factory, Azure Key Vault, or Azure Blob Storage
+- Use the GetOAuth2Token job type to obtain OAuth2 tokens for Data Factory, Key Vault, and Blob Storage operations
+- Use the GetPatToken job type to obtain a PAT token for Azure DevOps pipeline operations
+
+## Defining the ACS AzureWebservices connection
+
+The agent definition is created by adding a new ACS AzureWebservices agent in Solution Manager. Required fields are shown in red.
 
 ![Defining a Connection](../static/img/azure-ws-agent.png)
 
-1.  Open Solution Manager.
-2.  From the Home page select **Library**
-3.  From the ***Administration*** Menu select **Agents**.
-4.  Select **+Add** to add a new agent definition.
-5.  Fill in the agent details
-    - Insert a unique name for the connection.
-    - Select **ACS AzureWebservices** from the **Type** drop-down list.
-    - Select **General Settings**
-    - In the **NetCom** field enter **\<Default\>** or a Netcom or Relay name.
-    - Select **ACS AzureWebservices Settings**
-    - The **Azure URL** field contains a default value ***azure.status.microsoft/en-us/status*** which is used as a heartbeat to check if the Azure environment is available. 
-    - In the **OpCon URL** field, enter the address:port of the hots OpCon System.
-    - In the **OpCon Token** field, enter a token thath will be used to authenticate to the host OpCon system when using the OpCon Rest-API to create / update properties.
-    - in the **Retain Log files** field enter the number of days to retain log files (default 30).
-    - If debug required, select the **Debug Mode** checkbox. 
-6.  Save the definition changes. 
-7.  Select **Communications Settings**
-    - ensure that **Requires XML Escape Sequences:User-Defined** field is set to **True**.
-    Save the definition changes.
-8.  Start the connection by selecting the **Change Communication Status** button and selecting **Enable Full Comm.**. 
+To define the ACS AzureWebservices connection, complete the following steps:
 
-## Defining tasks
+1. Open Solution Manager.
+2. From the Home page, select **Library**.
+3. From the **Administration** menu, select **Agents**.
+4. Select **+Add**.
+5. Enter the agent details:
+   - Enter a unique name for the connection.
+   - Select **ACS AzureWebservices** from the **Type** list.
+   - Select **General Settings**.
+   - In the **NetCom** field, enter `<Default>` or a Netcom or Relay name.
+   - Select **ACS AzureWebservices Settings**.
+   - The **Azure URL** field defaults to `azure.status.microsoft/en-us/status`, used as a heartbeat to check Azure availability.
+   - In the **OpCon URL** field, enter the address and port of the host OpCon system.
+   - In the **OpCon Token** field, enter a token for authenticating to the host OpCon system via the OpCon REST API.
+   - In the **Retain Log files** field, enter the number of days to retain log files (default is 30).
+   - (Optional) Select the **Debug Mode** option to enable debug logging.
+6. Select **Save**.
+7. Select **Communications Settings**, set **Requires XML Escape Sequences:User-Defined** to **True**, then select **Save**.
+8. Select the **Change Communication Status** button and select **Enable Full Comm.**
 
-The ACS AzureWebservices Connection supports the following task types:
+## Defining jobs
 
-JobType                | Description
------------------------|------------
-GetOAuth2Token         | Get an OAuth2 token 
-GetPatToken            | Create a Azure DevOps authentication token using a PAT (Personal Access Token)
-GetKeyVaultValue       | Retrieves information about secrets, keys or certificates from the Azure Keyvault.
-RunDevOpsPipeline      | Starts an Azure DevOps pipeline and monitors for completion
-RunDataFactoryPipeline | Starts an MS DataFactory pipeline and monitors for completion
-DownloadBlobStorage    | Download a file from Azure Blob Storage
-UploadBlobStorage      | Upload a file to Azure Blob Storage
+The ACS AzureWebservices connection supports the following job types:
 
-Before defining a **RunDevOpsPipeline** task, a **GetPatToken** task must be defined to create the authorization token required by the RunDevOpsPipeline Task. Similarly before defining the **GetKeyVaultValue**, **RunDataFactoryPipeline**, **DownloadBlobStorage** or **UploadBlobStorage** tasks a **GetOAuth2Token** must be defined to create the authorization task required by the GetKeyVaultValue, RunDataFactoryPipeline, DownloadBlobStorage and UploadBlobStorage tasks.
+| Job type | Description |
+|---|---|
+| GetOAuth2Token | Retrieve an OAuth2 token for Azure services |
+| GetPatToken | Create an Azure DevOps authentication token using a Personal Access Token |
+| GetKeyVaultValue | Retrieve a secret, key, or certificate from Azure Key Vault |
+| RunDevOpsPipeline | Start an Azure DevOps pipeline and monitor for completion |
+| RunDataFactoryPipeline | Start a Microsoft Data Factory pipeline and monitor for completion |
+| DownloadBlobStorage | Download a file from Azure Blob Storage |
+| UploadBlobStorage | Upload a file to Azure Blob Storage |
 
-The generated authentication tasks (GetPatToken, GetOAuth2Token) store the generated token as schedule instance properties of the schedule or within OpCon properties. These properties are then available for subsequent tasks in the schedule. 
+**Authentication dependencies:** Define a GetPatToken job before RunDevOpsPipeline. Define a GetOAuth2Token job before GetKeyVaultValue, RunDataFactoryPipeline, DownloadBlobStorage, or UploadBlobStorage. Set job dependencies so the authentication job runs first. The generated tokens are stored as schedule instance properties or OpCon properties and passed automatically to subsequent jobs.
 
-### GetOAuth2Token Task
+### Prerequisite steps for all job definitions
 
-The GetOAuth2Token task is used to get an OAuth2 token and set it as a schedule instance property so it can be used to provide authentication by subsequent Azure tasks.
+Every job type in this connector follows the same steps to open the job definition form. Complete the following steps before configuring the job-type-specific fields described in each section below.
+
+To open the master job definition form, complete the following steps:
+
+1. Open Solution Manager.
+2. From the Home page, select **Library**.
+3. From the **Administration** menu, select **Master Jobs**.
+4. Select **+Add**.
+5. In the **Schedule** list, select the schedule.
+6. In the **Name** field, enter a unique name for the job.
+7. In the **Job Type** list, select **ACS AzureWebservices**.
+8. In the **Task Type** list, select the job type you want to configure.
+9. Select the **Task Details** button.
+
+Continue with the job-type-specific steps in the section below.
+
+---
+
+### GetOAuth2Token job
+
+The GetOAuth2Token job retrieves an OAuth2 token and stores it as a schedule instance property or OpCon property for use by subsequent jobs that interact with Azure Data Factory, Key Vault, or Blob Storage.
 
 ![Defining a GetOAuth2Token Master Job](../static/img/azure-ws-getaoauth2token-master-job1.png)
 
-1.  Open Solution Manager.
-2.  From the Home page select **Library**
-3.  From the ***Administration*** Menu select **Master Jobs**.
-4.  Select **+Add** to add a new master job definition.
-5.  Fill in the task details.
-    - Select the **Schedule** name from the drop-down list.
-    - In the **Name** field enter a unique name for the task within the schedule.
-    - Select **ACS AzureWebservices** from the **Job Type** drop-down list.
-    - Select **GetOAuth2Token** from the **Task Type** drop-down list.
-    
-Enter details for Task Type **GetOAuth2Token**. 
+After completing the [prerequisite steps](#prerequisite-steps-for-all-job-definitions) and selecting **GetOAuth2Token** as the task type:
 
-1.  Select the **Task Details** button.
-2.  In the **Integration** section, enter the information to obtain an authentication token. Items defined in red are required values.
-3.  In the **Authentication** section, field enter the Url, client, key and resource information. Select the Grant Type and enter a name value pair in the Response Variable section to contain the generated token.
-    - In the **Url** field enter the information to where to retrieve the url from. The value includes the unique tenant id (i.e. tenant-id/oauth2/token).
-    - In the **Clientid** field enter the client id created during the Azure Application registration process.
-    - In the **Key** field enter the key created during the Azure Application registration process.
-    - In the **Resource** field, enter the storage resource containing the storage account name (i.e. https://storage-account.blob.core.windows.net).
-    - Select ***client_credentials*** from the drop-down list of the **Grant Type** field.
-    - In the **OpCon Property**  field enter a property name that will be used to store the token. It is possible to use instance properties provided the full path is used. 
- 4. In the **Request** section enter the following information
-    - Select ***application/x-www-form-urlencoded*** from the **Content** the drop-down list.
+1. In the **Integration** section, confirm required fields (shown in red).
+2. In the **Authentication** section:
+   - In the **Url** field, enter the token endpoint URL including the tenant ID (for example, `tenant-id/oauth2/token`).
+   - In the **Clientid** field, enter the client ID from the Azure Application registration.
+   - In the **Key** field, enter the key from the Azure Application registration.
+   - In the **Resource** field, enter the storage resource (for example, `https://storage-account.blob.core.windows.net`).
+   - Select **client_credentials** from the **Grant Type** list.
+   - In the **OpCon Property** field, enter the property name where the token will be stored. You can use instance properties if the full path is provided.
+3. In the **Request** section, select **application/x-www-form-urlencoded** from the **Content** list.
 
-![Defining a GetOAuth2Token Master Job](../static/img/azure-ws-getaoauth2token-master-job2.png)
+   ![Defining a GetOAuth2Token Master Job](../static/img/azure-ws-getaoauth2token-master-job2.png)
 
- 5. If OpCon properties are not being used, use the Response section to store the token in the schedule for futire use.  
-    In the **Response** section enter the following information
-    - Select ***application/json*** from the **Content** the drop-down list.
-    - In the **Response Variable** section, define the variable that will contain the OAuth2 token. The format is name=value where the name part will be the schedule instance property name, the value part is ignored.  
+4. (Optional) If not using OpCon properties, in the **Response** section:
+   - Select **application/json** from the **Content** list.
+   - In **Response Variable**, enter the variable in the format `name=value` where `name` is the schedule instance property name (the value is ignored).
+5. Select **Save**. The GetOAuth2Token job is added to the schedule.
 
-### GetPatToken Task
+---
 
-The GetPatToken task is used to set a PAT token as a schedule instance property so it can be used to provide authentication by subsequent Azure DevOps tasks.   
+### GetPatToken job
+
+The GetPatToken job encodes a Personal Access Token (PAT) from Azure DevOps and stores it for use by a subsequent RunDevOpsPipeline job.
 
 ![Defining a GetPatToken Master Job](../static/img/azure-ws-getpattoken-master-job.png)
 
-1.  Open Solution Manager.
-2.  From the Home page select **Library**
-3.  From the ***Administration*** Menu select **Master Jobs**.
-4.  Select **+Add** to add a new master job definition.
-5.  Fill in the task details.
-    - Select the **Schedule** name from the drop-down list.
-    - In the **Name** field enter a unique name for the task within the schedule.
-    - Select **ACS AzureWebservices** from the **Job Type** drop-down list.
-    - Select **GetPatToken** from the **Task Type** drop-down list.
+After completing the [prerequisite steps](#prerequisite-steps-for-all-job-definitions) and selecting **GetPatToken** as the task type:
 
-Enter details for Task Type **GetPatToken**. 
+1. In the **Integration Selection** section, select the ACS AzureWebservices connection.
+2. In the **Authentication** section:
+   - Enter the PAT retrieved from Azure DevOps. For instructions on creating a PAT, see the [Microsoft documentation](https://learn.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate?view=azure-devops&tabs=Windows).
+   - In the **OpCon Property** field, enter the property name where the token will be stored. You can use instance properties if the full path is provided.
+3. (Optional) If not using OpCon properties, in the **Response Variable** section, enter the variable in the format `name=value` where `name` is the schedule instance property name.
+4. Select **Save**. The GetPatToken job is added to the schedule.
 
-1.  Select the **Task Details** button.
-2.  In the **Integration Selection** section, select the primary integration which is an ACS AzureWebservices connection previously defined.
-3.  In the **Authentication** section 
-    - enter a PAT (Personal Action Token) retrieved from the Azure DevOps environment (see https://learn.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate?view=azure-devops&tabs=Windows for information on how to create a PAT).
-    - In the **OpCon Property**  field enter a property name that will be used to store the token. It is possible to use instance properties provided the full path is used. 
-4.  If OpCon properties are not being used, in the **Response Variable** section, define the variable that will contain the PAT token. The format is name=value where the name part will be the schedule instance property name, the value part is ignored. 
+---
 
-### GetKeyVaultValue Task
+### GetKeyVaultValue job
 
-The GetKeyVaultValue task is used to retrieve secret, key or certificate information from an Azure KeyVault and store the result in opCon properties.
+The GetKeyVaultValue job retrieves a secret, key, or certificate from Azure Key Vault and stores the result in an OpCon property.
+
+**Prerequisite:** A GetOAuth2Token job must run before this job and the OAuth2 token must be available.
 
 ![Defining a GetKeyVaultValue Master Job](../static/img/azure-ws-getkeyvaultvalue-master-job.png)
 
-1.  Open Solution Manager.
-2.  From the Home page select **Library**
-3.  From the ***Administration*** Menu select **Master Jobs**.
-4.  Select **+Add** to add a new master job definition.
-5.  Fill in the task details.
-    - Select the **Schedule** name from the drop-down list.
-    - In the **Name** field enter a unique name for the task within the schedule.
-    - Select **ACS AzureWebservices** from the **Job Type** drop-down list.
-    - Select **GeKeyVaultValue** from the **Task Type** drop-down list.
+After completing the [prerequisite steps](#prerequisite-steps-for-all-job-definitions) and selecting **GetKeyVaultValue** as the task type:
 
-Enter details for Task Type **GetKeyVaultValue**. 
+1. In the **Integration Selection** section, select the ACS AzureWebservices connection.
+2. In the **Job Configuration** section:
+   - In the **Vault Url** field, enter the address of the Azure Key Vault.
+   - In the **Type** field, select **secret**, **key**, or **certificate** from the list.
+   - In the **Name** field, enter the name of the key vault item.
+   - In the **version** field, enter the version to retrieve. Leave empty to retrieve the latest version.
+   - If the type is **key** or **certificate**, select the attribute to return from the **Attribute** field:
+     - Key attributes: `Key.kid`, `Key.kty`, `Key.D`, `Key.Dp`, `Key.Dq`, `Key.E`, `Key.K`, `Key.N`, `Key.P`, `Key.Q`, `Key.Qi`, `Key.X`, `Key.Y`
+     - Certificate attributes: `Cert.kid`, `Cert.sid`, `Cert.x5t`, `Cert.cer`
+   - In the **OpCon Property** field, enter the property name where the retrieved value will be stored.
+   - In **Header Attributes**, enter `Authorization=name` where `name` is the OpCon property name or response variable name that contains the OAuth2 token.
+3. Select **Save**. The GetKeyVaultValue job is added to the schedule.
 
-1.  Select the **Task Details** button.
-2.  In the **Integration Selection** section, select the primary integration which is an ACS AzureWebservices connection previously defined.
-3.  In the **Job Configuration** section enter the following information
-    - In the **Vault Url** field enter the address of the Azure Keyvault.
-    - In the **Type** field select the key vault type from the drop-down list (secret, key or certificate).
-    - In the **Name** field enter the name of the required key vault item.
-    - In the **version** field enter the version of the key or certificate required. If no version is sentered, the latest entry will be retrieved.
-    - If the Selected Type is key or certifcate, in the **Attribute** field select the attribute information that should be returned.
-      key attributes : **Key.kid, Key.kty, Key.D, Key.Dp, Key.Dq, Key.E, Key.K, Key.N, Key.P, Key.Q, Key.Qi, Key.X, Key.Y**.
-      certificate attributes **Cert.kid, Cert.sid, Cert.x5t, Cert.cer**.
-    - In the **OpCon Property**  field enter a property name that will be used to store the token. It is possible to use instance properties provided the full path is used. 
-    - In the **Header Attributes** section, add an ***Authorization=name*** where the name portion is either the OpCon Property Name or the name portion assigned of a response variable that contains the OAuth2 token in a previous GetOAuth2Token task.
+---
 
-### RunDevOpsPipeline Task
+### RunDevOpsPipeline job
 
-The RunDevOpsPipeline task is used to start a DevOps pipeline and monitor the started task for completion. 
-A Job Dependency should be defined on a previous **GetPatToken** task.   
+The RunDevOpsPipeline job starts an Azure DevOps pipeline and monitors it until it completes.
+
+**Prerequisite:** A GetPatToken job must run before this job and set a job dependency from RunDevOpsPipeline to GetPatToken.
 
 ![Defining a RunDevOpsPipeline Master Job](../static/img/azure-ws-rundevopspipeline-master-job.png)
 
-1.  Open Solution Manager.
-2.  From the Home page select **Library**
-3.  From the ***Administration*** Menu select **Master Jobs**.
-4.  Select **+Add** to add a new master job definition.
-5.  Fill in the task details.
-    - Select the **Schedule** name from the drop-down list.
-    - In the **Name** field enter a unique name for the task within the schedule.
-    - Select **ACS AzureWebservices** from the **Job Type** drop-down list.
-    - Select **RunDevOpsPipeline** from the **Task Type** drop-down list.
-    
-Enter details for Task Type **RunDevOpsPipeline**. Fields marked in red must be provided.
+After completing the [prerequisite steps](#prerequisite-steps-for-all-job-definitions) and selecting **RunDevOpsPipeline** as the task type:
 
-1.  Select the **Task Details** button.
-2.  In the **Integration Selection** section, select the primary integration which is an ACS AzureWebservices connection previously defined.
-3.  In the **Job Configuration** section enter the following information
-    - In the **Azure Url** field enter ***dev.azure.com***.
-    - In the **Organization** field enter the name of the DevOps Organization.
-    - In the **Project** field enter the name of the DevOps Project within the DevOps Organization.
-    - In the **Pipeline Name** field, enter the name of the DevOps pipeline to execute. 
-4.  In the **Request** section enter the following information
-    - Select the **Content** from the drop-down list.
-    - In the **Header Attributes** section, add an ***Authorization=name*** where the name portion is either the OpCon Property Name or the name portion assigned of a response variable that contains the PAT token in a previous GetPatToken task.
-5.  In the **Response** section enter the following information
-    - Select the **Content** from the drop-down list.
-    - In the **Response Variables** section a variable can be defined to contain data extracted from the returned JSON data. The
-    extracted data will be stored as a schedule instance property in the schedule making the extracted information available to subsequent tasks. 
-    The format of the field definition is variable-name=jsonpath where
-    - variable-name is the name of the variable that will be created as a schedule instance property.
-    - jsonpath is the attribute value to extract from the returned JSON data using JPath notation 
-    (i.e. ***$.id*** indicates extract the value of the first ***id*** attribute in the returned JSON,
-          ***$.[0].id*** indicates extract the value of the first ***id*** attribute from the first record in the returned JSONArray).
+1. In the **Integration Selection** section, select the ACS AzureWebservices connection.
+2. In the **Job Configuration** section (required fields shown in red):
+   - In the **Azure Url** field, enter `dev.azure.com`.
+   - In the **Organization** field, enter the DevOps organization name.
+   - In the **Project** field, enter the DevOps project name.
+   - In the **Pipeline Name** field, enter the DevOps pipeline name to run.
+3. In the **Request** section:
+   - Select the content type from the **Content** list.
+   - In **Header Attributes**, enter `Authorization=name` where `name` is the OpCon property name or response variable name that contains the PAT token.
+4. In the **Response** section:
+   - Select the content type from the **Content** list.
+   - (Optional) In **Response Variables**, enter a variable in the format `variable-name=jsonpath` to extract a value from the response and store it as a schedule instance property. For example, `$.id` extracts the first `id` attribute; `$.[0].id` extracts the first `id` from the first record in a JSON array.
+5. Select **Save**. The RunDevOpsPipeline job is added to the schedule.
 
-### RunDataFactoryPipeline Task
+---
 
-The RunDataFactoryPipeline task is used to start a MS DataFactory pipeline and monitor the started task for completion. 
-A Job Dependency should be defined on a previous **GetOAuth2Token** task.   
+### RunDataFactoryPipeline job
+
+The RunDataFactoryPipeline job starts a Microsoft Data Factory pipeline and monitors it until it completes.
+
+**Prerequisite:** A GetOAuth2Token job must run before this job and set a job dependency from RunDataFactoryPipeline to GetOAuth2Token.
 
 ![Defining a RunDataFactoryPipeline Master Job](../static/img/azure-ws-rundatafactorypipeline-master-job.png)
 
-1.  Open Solution Manager.
-2.  From the Home page select **Library**
-3.  From the ***Administration*** Menu select **Master Jobs**.
-4.  Select **+Add** to add a new master job definition.
-5.  Fill in the task details.
-    - Select the **Schedule** name from the drop-down list.
-    - In the **Name** field enter a unique name for the task within the schedule.
-    - Select **ACS AzureWebservices** from the **Job Type** drop-down list.
-    - Select **RunDataFactoryPipeline** from the **Task Type** drop-down list.
-    
-Enter details for Task Type **RunDataFactoryPipeline**. Fields marked in red must be provided.
+After completing the [prerequisite steps](#prerequisite-steps-for-all-job-definitions) and selecting **RunDataFactoryPipeline** as the task type:
 
-1.  Select the **Task Details** button.
-2.  In the **Integration Selection** section, select the primary integration which is an ACS AzureWebservices connection previously defined.
-3.  In the **Job Configuration** section enter the following information
-    - In the **Data Factory Url** field enter ***management.azure.com/subscription***.
-    - In the **Subscription** field enter your DevOps Subscription id.
-    - In the **Resource Group Name** field enter the name of resource group where the Data Factory is defined.
-    - In the **Data Factory Name** field enter the name of the Data Factory.
-    - In the **Pipeline Name** field, enter the name of the Data Factory pipeline to execute.
-    - If wishing to run a specific pipeline with the parameters of a previous execution, enter the runid of the pipeline in the **Pipeline Runid** field.
-    - If Run Parameters are required, enter a name associated with the parameters in the **Name** field of the **Run Parameters** section.
-    - To add parameters, enter the parameter value in the **Run Parameter** field. To additional parameters, select the **+Add Item** button and enter the parameter value. 
+1. In the **Integration Selection** section, select the ACS AzureWebservices connection.
+2. In the **Job Configuration** section (required fields shown in red):
+   - In the **Data Factory Url** field, enter `management.azure.com/subscription`.
+   - In the **Subscription** field, enter the Azure subscription ID.
+   - In the **Resource Group Name** field, enter the resource group where the Data Factory is defined.
+   - In the **Data Factory Name** field, enter the Data Factory name.
+   - In the **Pipeline Name** field, enter the pipeline name to run.
+   - (Optional) In **Pipeline Runid**, enter a run ID to re-run a specific previous execution.
+   - (Optional) In the **Run Parameters** section, enter a name and values to pass as run parameters. Select **+Add Item** to add additional parameters.
+3. In the **Request** section:
+   - Select **application/json** from the **Content** list.
+   - In **Header Attributes**, enter `Authorization=name` where `name` is the OpCon property name or response variable name that contains the OAuth2 token.
+4. (Optional) In the **Pipeline Recovery** section, configure restart behavior:
+   - Select the **Recovery** option to enable recovery.
+   - To restart from a specific activity, enter the activity name in **Start Activity Name**.
+   - To restart from the beginning, leave **Start Activity Name** empty and do not select **Start From Failure**.
+   - To restart from the failed activity, select the **Start From Failure** option.
+5. Select **Save**. The RunDataFactoryPipeline job is added to the schedule.
 
-4.  In the **Request** section enter the following information
-    - Select the **Content** from the drop-down list (application/json).
-    - In the **Header Attributes** section, add an ***Authorization=name*** where the name portion is either the OpCon Property Name or the name portion assigned of a response variable that contains the OAuth2 token in a previous GetOAuth2Token task. 
+---
 
-For Pipeline recovery purposes, the **Pipeline Recovery** section can be used to restart a Pipeline.
-- Select the **Recovery** checkbox and then configure the recovery options.
-- To restart from a specific point enter the restart point in the **Start Activity Name**.
-- To restart from the beginning leave the **Start Activity Name** empty and do not select the **Start From Failure** checkbox.
-- To restart from the failed position, select the **Start From Failure** checkbox. 
+### DownloadBlobStorage job
 
-### DownloadStorageBlob Task
+The DownloadBlobStorage job downloads a file from Azure Blob Storage to the system where the connector is installed.
 
-The UploadBlobStorage task is upload a file to Azure BlobStorage. 
-A Job Dependency should be defined on a previous **GetOAuth2Token** task.   
+**Prerequisite:** A GetOAuth2Token job must run before this job and set a job dependency from DownloadBlobStorage to GetOAuth2Token.
 
 ![Defining a DownloadBlobStorage Master Job](../static/img/azure-ws-downloadblobstorage-master-job.png)
 
-1.  Open Solution Manager.
-2.  From the Home page select **Library**
-3.  From the ***Administration*** Menu select **Master Jobs**.
-4.  Select **+Add** to add a new master job definition.
-5.  Fill in the task details.
-    - Select the **Schedule** name from the drop-down list.
-    - In the **Name** field enter a unique name for the task within the schedule.
-    - Select **ACS AzureWebservices** from the **Job Type** drop-down list.
-    - Select **DownloadBlobStorage** from the **Task Type** drop-down list.
-    
-Enter details for Task Type **UploadBlobStorage**. Fields marked in red must be provided.
+After completing the [prerequisite steps](#prerequisite-steps-for-all-job-definitions) and selecting **DownloadBlobStorage** as the task type:
 
-1.  Select the **Task Details** button.
-2.  In the **Integration Selection** section, select the primary integration which is an ACS AzureWebservices connection previously defined.
-3.  In the **DownloadAzureBlob** section enter the following information
-    - In the **Storage Account** field enter the name of the storage account.
-    - In the **Path** field enter the path of the file to be downloaded from the storage area. The value consists of
-    the container name and the filename (i.e. container/filename).
-    - In the **Filename** field enter the name of the file to create. Please note that the file location is relative to the system where the plugin is installed.
-4.  In the **Request** section enter the following information
-    - Select the **Content** from the drop-down list.
-    - In the **Header Attributes** section, add an ***Authorization=name*** where the name portion is either the OpCon Property Name or the name portion assigned of a response variable that contains the OAuth2 token in a previous GetOAuth2Token task. 
+1. In the **Integration Selection** section, select the ACS AzureWebservices connection.
+2. In the **DownloadAzureBlob** section:
+   - In the **Storage Account** field, enter the storage account name.
+   - In the **Path** field, enter the path of the file in storage using the format `container/filename`.
+   - In the **Filename** field, enter the local path and name of the file to create. The path is relative to the system where the connector is installed.
+3. In the **Request** section:
+   - Select the content type from the **Content** list.
+   - In **Header Attributes**, enter `Authorization=name` where `name` is the OpCon property name or response variable name that contains the OAuth2 token.
+4. Select **Save**. The DownloadBlobStorage job is added to the schedule.
 
-### UploadStorageBlob Task
+---
 
-The UploadBlobStorage task is upload a file to Azure BlobStorage. 
-A Job Dependency should be defined on a previous **GetOAuth2Token** task.   
+### UploadBlobStorage job
+
+The UploadBlobStorage job uploads a file from the system where the connector is installed to Azure Blob Storage.
+
+**Prerequisite:** A GetOAuth2Token job must run before this job and set a job dependency from UploadBlobStorage to GetOAuth2Token.
 
 ![Defining a UploadBlobStorage Master Job](../static/img/azure-ws-uploadblobstorage-master-job.png)
 
-1.  Open Solution Manager.
-2.  From the Home page select **Library**
-3.  From the ***Administration*** Menu select **Master Jobs**.
-4.  Select **+Add** to add a new master job definition.
-5.  Fill in the task details.
-    - Select the **Schedule** name from the drop-down list.
-    - In the **Name** field enter a unique name for the task within the schedule.
-    - Select **ACS AzureWebservices** from the **Job Type** drop-down list.
-    - Select **UploadBlobStorage** from the **Task Type** drop-down list.
-    
-Enter details for Task Type **UploadBlobStorage**. Fields marked in red must be provided.
+After completing the [prerequisite steps](#prerequisite-steps-for-all-job-definitions) and selecting **UploadBlobStorage** as the task type:
 
-1.  Select the **Task Details** button.
-2.  In the **Integration Selection** section, select the primary integration which is an ACS AzureWebservices connection previously defined.
-3.  In the **UploadAzureBlob** section enter the following information
-    - In the **Storage Account** field enter the name of the storage account.
-    - In the **Path** field enter the path where the file must be placed within the storage area. The value consists of
-    the container name and the filename (i.e. container/filename).
-    - In the **Filename** field enter the name of the file to upload. Please note that the file location is relative to the system where the plugin is installed.
-4.  In the **Request** section enter the following information
-    - Select the **Content** from the drop-down list.
-    - In the **Header Attributes** section, add an ***Authorization=name*** where the name portion is either the OpCon Property Name or the name portion assigned of a response variable that contains the OAuth2 token in a previous GetOAuth2Token task. 
+1. In the **Integration Selection** section, select the ACS AzureWebservices connection.
+2. In the **UploadAzureBlob** section:
+   - In the **Storage Account** field, enter the storage account name.
+   - In the **Path** field, enter the destination path in storage using the format `container/filename`.
+   - In the **Filename** field, enter the local path and name of the file to upload. The path is relative to the system where the connector is installed.
+3. In the **Request** section:
+   - Select the content type from the **Content** list.
+   - In **Header Attributes**, enter `Authorization=name` where `name` is the OpCon property name or response variable name that contains the OAuth2 token.
+4. Select **Save**. The UploadBlobStorage job is added to the schedule.
+
+---
+
+## FAQs
+
+**Which authentication job do I need before running a DevOps pipeline?**
+Define a GetPatToken job and set a job dependency from the RunDevOpsPipeline job to the GetPatToken job. The PAT token must be available as a schedule instance property or OpCon property before RunDevOpsPipeline runs.
+
+**Which authentication job do I need before running a Data Factory pipeline, accessing Key Vault, or using Blob Storage?**
+Define a GetOAuth2Token job and set a job dependency from the downstream job to the GetOAuth2Token job. The OAuth2 token must be available before the subsequent job runs.
+
+**How do I store a token for use across multiple jobs?**
+Enter a property name in the **OpCon Property** field of the GetOAuth2Token or GetPatToken job to store the token as an OpCon property accessible across schedules. Alternatively, use **Response Variable** to store it as a schedule instance property scoped to the current schedule run.
+
+**What value do I enter in the Azure Url field for a RunDevOpsPipeline job?**
+Enter `dev.azure.com` in the **Azure Url** field.
+
+**What is the default value of the Azure URL field in the connection definition?**
+The default value is `azure.status.microsoft/en-us/status`. This URL is used as a heartbeat check to verify that the Azure environment is available.
+
+**Can I restart a Data Factory pipeline from a specific point if it fails?**
+Yes. In the **Pipeline Recovery** section of a RunDataFactoryPipeline job, select the **Recovery** option and enter the restart point in the **Start Activity Name** field. To restart from the failed activity, select **Start From Failure** instead.
+
+## Glossary
+
+**ACS AzureWebservices** — An OpCon connector that enables jobs to interact with Microsoft Azure services including Azure DevOps, Azure Data Factory, Azure Key Vault, and Azure Blob Storage.
+
+**GetOAuth2Token** — A job type that retrieves an OAuth2 token from an Azure OAuth2 endpoint and stores it as a schedule instance property or OpCon property for use by subsequent jobs.
+
+**GetPatToken** — A job type that encodes a Personal Access Token (PAT) for Azure DevOps and stores it as a schedule instance property or OpCon property for use by subsequent jobs.
+
+**GetKeyVaultValue** — A job type that retrieves a secret, key, or certificate from an Azure Key Vault and stores the result in an OpCon property.
+
+**RunDevOpsPipeline** — A job type that starts an Azure DevOps pipeline and monitors it until the pipeline completes.
+
+**RunDataFactoryPipeline** — A job type that starts a Microsoft Data Factory pipeline and monitors it until the pipeline completes.
+
+**DownloadBlobStorage** — A job type that downloads a file from Azure Blob Storage to the system where the connector is installed.
+
+**UploadBlobStorage** — A job type that uploads a file from the system where the connector is installed to Azure Blob Storage.
+
+**PAT (Personal Access Token)** — An authentication credential created in Azure DevOps that grants access to DevOps resources. Used by the GetPatToken job type.
+
+**Schedule instance property** — A named value scoped to a single running instance of a schedule. Used to pass data such as authentication tokens between jobs within the same schedule run.
+
+**OpCon property** — A named value stored in OpCon that can be used across schedules and jobs. Authentication tokens can be stored as OpCon properties for use beyond a single schedule instance.
+
+**JPath** — A query notation for extracting values from JSON documents. Used in the **Response Variables** field to target specific attributes in a JSON response.

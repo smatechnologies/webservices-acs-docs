@@ -1,81 +1,55 @@
 ---
+slug: '/'
 sidebar_label: 'WebServices ACS'
+hide_table_of_contents: true
+displayed_sidebar: null
 ---
 
-# WebServices ACS Documentation
+# WebServices ACS
 
-Latest version for ACS WebServices is 25.0.0.
-Latest version for ACS AzureWebServices is 25.0.3.
+The WebServices ACS connector provides direct REST API access and Microsoft Azure integration for OpCon schedules without requiring agent installation on target systems.
 
-ACS WebServices provides direct Rest-API access to applications without the need for the installation of additional components.
-It is part of the ACS (Agentless Connector System) suite of products. 
+<div style={{display: 'flex', gap: '0.75rem', alignItems: 'flex-start', flexWrap: 'wrap', marginTop: '1rem'}}>
 
-ACS is a new OpCon Agent type that provides a framework for agent development. It is an internal component provided by the SMANetCom module. 
-All integrations are generated DLL's and placed in a standard folder that is monitored by the ACS services.
+<div style={{flex: '1', minWidth: '160px', display: 'flex', flexDirection: 'column', gap: '0.6rem'}}>
 
-These modules are loaded into the OpCon environment during startup. New modules can be copied to the monitored folder and will be available for 
-configuration after the SMA OpCOn Service Manager and SMA OpCon RestAPI services are restarted.
+<div style={{background: 'var(--ifm-card-background-color)', border: '1px solid var(--ifm-color-emphasis-400)', borderRadius: '10px', padding: '0.75rem 1rem'}}>
 
-All code and task / agent screen definitions are contained in the generated DLL that is placed in the monitored folder. To display the task and 
-agent definitions, the form layouts are retrieved from the DLL and passed to Solution Manager to render the screen layout. Agent / task definitions are 
-stored as JSON values in the OpCon database tables.
+### Overview
 
-Agent / task definitions for the ACS environment can only be created / updated using Solution Manager.
-JORS support for the ACS environment is only provided through Solution Manager.
+- [Overview](./overview.md)
+- [Release notes](./release-notes.md)
 
-## Passing Data between Tasks
+</div>
 
-The ACS Webservices impelementation does not include the concepts of **steps** supported by the previous WebServices Connector. Instead each function is
-executed as a separate task. Information is passed between tasks using the ACS Scoped properties capabilities. The scoped property implementation saves the data as schedule instance properties of the associated schedule instance in the Daily tables.
+<div style={{background: 'var(--ifm-card-background-color)', border: '1px solid var(--ifm-color-emphasis-400)', borderRadius: '10px', padding: '0.75rem 1rem'}}>
 
-To save data, use the **Response Variables** section to define the name of the data variable and the associated value. The data variable name can then 
-be used in the urls and message body of subsequent tasks.
+### Installation
 
-Examples
+- [Installation and upgrade](./installation.md)
 
-1. Need to pass the id returned from a POST request to obtain the status of a the request on a subsequent task.
-   - on POST request task define a response variable taskId=$.task.id
-     where ***taskId*** is the name of the variable and ***$.task.id*** is the JPath notation required to extract the id from the returned JSON.
-   - in the subsequent GET task url definition use the variable name
-     GET  https://server:port/api/status/taskId
-2. Need to pass the id returned from a POST request within the message body on a subsequent POST task.
-   - on POST request task define a response variable taskId=$.task.id
-     where ***taskId*** is the name of the variable and ***$.task.id*** is the JPath notation required to extract the id from the returned JSON.
-   - in the subsequent POST task message body definition use the variable name
-     {
-        "previous-task":"taskId"
-     }
+</div>
 
-## Implementation
+</div>
 
-WebService ACS comprises of two separate environments ACS Webservices and ACS AzureWebservices.
+<div style={{flex: '1', minWidth: '160px', display: 'flex', flexDirection: 'column', gap: '0.6rem'}}>
 
-Provides jobtypes that can be used to create task definitions. Each jobtype is a separate OpCon task and information is passed between tasks using the
-capabilities of the ACS framework (information passed between tasks are saved as Schedule Instance properties).  
+<div style={{background: 'var(--ifm-card-background-color)', border: '1px solid var(--ifm-color-emphasis-400)', borderRadius: '10px', padding: '0.75rem 1rem'}}>
 
-## ACS AzureWebservices
-Provides defined integrations with the MicroSoft Azure environment. Includes authentication tasks and tasks to start DevOps pipelines and Upload and Download files to/from Azure storage.
-The following job-types are currently available.
+### ACS Webservices
 
-JobType                | Description
------------------------|------------
-GetOAuth2Token         | Get an OAuth2 token 
-GetPatToken            | Create a Azure DevOps authentication token using a PAT (Personal Access Token)
-RunDevOpsPipeline      | Starts an Azure DevOps pipeline and monitors for completion
-RunDataFactoryPipeline | Starts an MS DataFactory pipeline and monitors for completion
-DownloadBlobStorage    | Download a file from Azure Blob Storage
-UploadBlobStorage      | Upload a file to Azure Blob Storage
+- [Operation and job types](./ACSWebservicesOperation.md)
 
-## ACS Webservices
-Provides generic implementations for authentication and standard GET, POST, PUT, PATCH and DELETE functions.
+</div>
 
-JobType              | Description
----------------------|------------
-BASICTOKEN           | Creates a basic token that can be used on subsequent tasks
-OPCONTOKEN           | Gets an OpCon token that can be used on subsequent tasks
-OAUTH2TOKEN          | Gets an OAuth2 token that can be used on subsequent tasks
-GET                  | Used to define a RestAPI GET function
-POST                 | Used to define a RestAPI POST function
-PUT                  | Used to define a RestAPI PUT function
-PATCH                | Used to define a RestAPI PATCH function
-DELETE               | Used to define a RestAPI DELETE function
+<div style={{background: 'var(--ifm-card-background-color)', border: '1px solid var(--ifm-color-emphasis-400)', borderRadius: '10px', padding: '0.75rem 1rem'}}>
+
+### ACS AzureWebservices
+
+- [Operation and job types](./ACSAzureWebservicesOperation.md)
+
+</div>
+
+</div>
+
+</div>

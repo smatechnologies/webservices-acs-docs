@@ -1,9 +1,9 @@
 module.exports = {
   mySidebar: [
-    'index',
-	'installation',
+    'overview',
+    'release-notes',
+    'installation',
     'ACSWebservicesOperation',
     'ACSAzureWebservicesOperation',
-    'release notes',
   ],
 };
