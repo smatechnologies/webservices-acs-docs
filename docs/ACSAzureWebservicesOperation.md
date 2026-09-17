@@ -244,7 +244,7 @@ After completing the [prerequisite steps](#prerequisite-steps-for-all-job-defini
 
 The DownloadBlobStorage job downloads a file from Azure Blob Storage to the system where the connector is installed.
 
-**Prerequisite:** A GetOAuth2Token job must run before this job and set a job dependency from DownloadBlobStorage to GetOAuth2Token.
+**Prerequisite:** A GetOAuth2V2Token job must run before this job and set a job dependency from DownloadBlobStorage to GetOAuth2V2Token.
 
 ![Defining a DownloadBlobStorage Master Job](../static/img/azure-ws-downloadblobstorage-master-job.png)
 
@@ -266,7 +266,7 @@ After completing the [prerequisite steps](#prerequisite-steps-for-all-job-defini
 
 The UploadBlobStorage job uploads a file from the system where the connector is installed to Azure Blob Storage.
 
-**Prerequisite:** A GetOAuth2Token job must run before this job and set a job dependency from UploadBlobStorage to GetOAuth2Token.
+**Prerequisite:** A GetOAuth2V2Token job must run before this job and set a job dependency from UploadBlobStorage to GetOAuth2V2Token.
 
 ![Defining a UploadBlobStorage Master Job](../static/img/azure-ws-uploadblobstorage-master-job.png)
 
@@ -308,7 +308,9 @@ Yes. In the **Pipeline Recovery** section of a RunDataFactoryPipeline job, selec
 
 **ACS AzureWebservices** — An OpCon connector that enables jobs to interact with Microsoft Azure services including Azure DevOps, Azure Data Factory, Azure Key Vault, and Azure Blob Storage.
 
-**GetOAuth2Token** — A job type that retrieves an OAuth2 token from an Azure OAuth2 endpoint and stores it as a schedule instance property or OpCon property for use by subsequent jobs.
+**GetOAuth2Token** — A job type that retrieves an OAuth2 token from an Azure oauth2/token endpoint and stores it as a schedule instance property or OpCon property for use by subsequent jobs.
+
+**GetOAuth2V2Token** — A job type that retrieves an OAuth2 V2.0 token from an Azure oauth2/v2.0/token endpoint and stores it as a schedule instance property or OpCon property for use by subsequent jobs.
 
 **GetPatToken** — A job type that encodes a Personal Access Token (PAT) for Azure DevOps and stores it as a schedule instance property or OpCon property for use by subsequent jobs.
 
