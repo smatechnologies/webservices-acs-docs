@@ -19,7 +19,8 @@ tags:
 The ACS AzureWebservices connector enables OpCon jobs to interact with Microsoft Azure services as part of automated schedules. Once the connector is registered with OpCon, you can define an agent connection and create jobs that run Azure DevOps pipelines, run Data Factory pipelines, retrieve values from Azure Key Vault, and upload or download files from Azure Blob Storage.
 
 - Use this connector when you need to integrate OpCon with Azure services such as Azure DevOps, Azure Data Factory, Azure Key Vault, or Azure Blob Storage
-- Use the GetOAuth2Token job type to obtain OAuth2 tokens for Data Factory, Key Vault, and Blob Storage operations
+- Use the GetOAuth2Token job type to obtain OAuth2 tokens for Data Factory and Key Vault operations
+- Use the GetOAuth2V2Token job type to obtain OAuth2 V2.0 tokens for Blob Storage operations
 - Use the GetPatToken job type to obtain a PAT token for Azure DevOps pipeline operations
 
 ## Defining the ACS AzureWebservices connection
@@ -56,6 +57,7 @@ The ACS AzureWebservices connection supports the following job types:
 | Job type | Description |
 |---|---|
 | GetOAuth2Token | Retrieve an OAuth2 token for Azure services |
+| GetOAuth2V2Token | Retrieve an OAuth2 V2 token for Azure services (to access Azure Storage) |
 | GetPatToken | Create an Azure DevOps authentication token using a Personal Access Token |
 | GetKeyVaultValue | Retrieve a secret, key, or certificate from Azure Key Vault |
 | RunDevOpsPipeline | Start an Azure DevOps pipeline and monitor for completion |
@@ -109,6 +111,33 @@ After completing the [prerequisite steps](#prerequisite-steps-for-all-job-defini
    - Select **application/json** from the **Content** list.
    - In **Response Variable**, enter the variable in the format `name=value` where `name` is the schedule instance property name (the value is ignored).
 5. Select **Save**. The GetOAuth2Token job is added to the schedule.
+
+---
+
+### GetOAuth2V2Token job
+
+The GetOAuth2V2Token job retrieves an OAuth2 V2 token and stores it as a schedule instance property or OpCon property for use by subsequent jobs that interact with Azure Blob Storage.
+
+![Defining a GetOAuth2V2Token Master Job](../static/img/azure-ws-getaoauth2v2token-master-job1.png)
+
+After completing the [prerequisite steps](#prerequisite-steps-for-all-job-definitions) and selecting **GetOAuth2V2Token** as the task type:
+
+1. In the **Integration** section, confirm required fields (shown in red).
+2. In the **Authentication** section:
+   - In the **Url** field, enter the token endpoint URL including the tenant ID (for example, `tenant-id/oauth2/v2.0/token`).
+   - In the **Clientid** field, enter the client ID from the Azure Application registration.
+   - In the **Key** field, enter the key from the Azure Application registration.
+   - In the **Scope** field, enter the storage resource (for example, `https://storage.azure.com/.default`).
+   - Select **client_credentials** from the **Grant Type** list.
+   - In the **OpCon Property** field, enter the property name where the token will be stored. You can use instance properties if the full path is provided.
+3. In the **Request** section, select **application/x-www-form-urlencoded** from the **Content** list.
+
+   ![Defining a GetOAuth2V2Token Master Job](../static/img/azure-ws-getaoauth2token-master-job2.png)
+
+4. (Optional) If not using OpCon properties, in the **Response** section:
+   - Select **application/json** from the **Content** list.
+   - In **Response Variable**, enter the variable in the format `name=value` where `name` is the schedule instance property name (the value is ignored).
+5. Select **Save**. The GetOAuth2V2Token job is added to the schedule.
 
 ---
 

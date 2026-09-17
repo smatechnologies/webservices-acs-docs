@@ -11,6 +11,16 @@ tags:
 
 # WebServices ACS release notes
 
+## ACS AzureWebservices
+
+### 25.0.4
+
+2026
+
+#### Bug fixes
+
+- **Fixed Azure Storage token generation** Resolved issue where token generation for Azure Storage resulted in key errors by implementing OAuth2 V2.0 token generation using new GetOAuth2V2Token job.
+
 ## ACS Webservices
 
 ### 25.0.2
