@@ -33,8 +33,10 @@ To install the ACS connector, complete the following steps:
 
    | Deployment type | Steps |
    |---|---|
-   | On-prem | Copy the `ACSAzureWebservices\ACSWebservices` directory to the `\\SAM\\plugins` directory. Restart the **SMA OpCon Services Manager** and **SMA OpCon RestAPI** service. |
-   | Cloud | Copy the `ACSAzureWebservices\ACSWebservices` directory to the `\\Relay\\plugins` directory. Restart the **SMA OpCon Relay** service. |
+   | On-prem | Copy the `ACSWebservices` or `ACSAzureWebservices` directory to the `\SAM\plugins` directory. Restart the **SMA OpCon Service Manager** and **SMA OpCon RestAPI** service. |
+   | Cloud | Copy the `ACSWebservices` or `ACSAzureWebservices` directory to the `\Relay\plugins` directory. Restart the **SMA OpCon Relay** service. |
+
+5. Confirm that **ACS Webservices** or **ACS AzureWebservices** appears in the **Type** list when you add an agent in Solution Manager.
 
 The connector is installed and available for configuration in Solution Manager.
 
@@ -50,8 +52,10 @@ To upgrade the ACS connector, complete the following steps:
 
    | Deployment type | Steps |
    |---|---|
-   | On-prem | Stop the **SMA OpCon Services Manager** and **SMA OpCon RestAPI** service. Copy the `ACSAzureWebservices\ACSWebservices` directory to the `\\SAM\\plugins` directory. Restart the **SMA OpCon Services Manager** and **SMA OpCon RestAPI** service. |
-   | Cloud | Copy the `ACSAzureWebservices\ACSWebservices` directory to the `\\Relay\\plugins` directory. Restart the **SMA OpCon Relay** service. |
+   | On-prem | Stop the **SMA OpCon Service Manager** and **SMA OpCon RestAPI** service. Copy the `ACSWebservices` or `ACSAzureWebservices` directory to the `\SAM\plugins` directory. Restart the **SMA OpCon Service Manager** and **SMA OpCon RestAPI** service. |
+   | Cloud | Copy the `ACSWebservices` or `ACSAzureWebservices` directory to the `\Relay\plugins` directory. Restart the **SMA OpCon Relay** service. |
+
+4. Confirm that **ACS Webservices** or **ACS AzureWebservices** still appears in the **Type** list when you add an agent in Solution Manager.
 
 The connector is upgraded to the new version.
 
@@ -61,10 +65,10 @@ The connector is upgraded to the new version.
 The package is available on the SMA FTP Site under `/OpCon Releases/Integrations/Webservices/` or `/OpCon Releases/Integrations/AzureWebservices/` depending on which connector you are installing.
 
 **Which plugins directory do I copy files to?**
-On-prem deployments use the `\\SAM\\plugins` directory. Cloud deployments use the `\\Relay\\plugins` directory.
+On-prem deployments use the `\SAM\plugins` directory. Cloud deployments use the `\Relay\plugins` directory.
 
 **Do I need to stop services before upgrading?**
-For on-prem deployments, stop the **SMA OpCon Services Manager** and **SMA OpCon RestAPI** service before copying files. For cloud deployments, you can copy the files and then restart the **SMA OpCon Relay** service without a prior stop step.
+For on-prem deployments, stop the **SMA OpCon Service Manager** and **SMA OpCon RestAPI** service before copying files. For cloud deployments, you can copy the files and then restart the **SMA OpCon Relay** service without a prior stop step.
 
 ## Glossary
 
@@ -74,6 +78,6 @@ For on-prem deployments, stop the **SMA OpCon Services Manager** and **SMA OpCon
 
 **Plugin** — The deployed connector files placed in the `plugins` directory that OpCon loads at service startup to make a connector available.
 
-**SMA OpCon Services Manager** — The Windows service that manages OpCon components on on-prem installations.
+**SMA OpCon Service Manager** — The Windows service that manages OpCon components on on-prem installations.
 
-**SMA OpCon Relay** — The Windows service used in cloud-hosted OpCon deployments in place of the on-prem Services Manager.
+**SMA OpCon Relay** — The Windows service used in cloud-hosted OpCon deployments in place of the on-prem SMA OpCon Service Manager.

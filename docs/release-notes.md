@@ -1,7 +1,7 @@
 ---
 sidebar_label: 'Release notes'
 title: WebServices ACS release notes
-description: "Version history and change details for the ACS WebServices and ACS AzureWebservices connectors, including new features and bug fixes."
+description: "Version history and change details for the ACS Webservices and ACS AzureWebservices connectors, including new features and bug fixes."
 tags:
   - Reference
   - Automation Engineer
@@ -10,16 +10,6 @@ tags:
 ---
 
 # WebServices ACS release notes
-
-## ACS AzureWebservices
-
-### 25.0.4
-
-2026
-
-#### Bug fixes
-
-- **Fixed Azure Storage token generation** Resolved issue where token generation for Azure Storage resulted in key errors by implementing OAuth2 V2.0 token generation using new GetOAuth2V2Token job.
 
 ## ACS Webservices
 
@@ -38,6 +28,14 @@ Initial release.
 ---
 
 ## ACS AzureWebservices
+
+### 25.0.4
+
+2026
+
+#### Bug fixes
+
+- **Fixed Azure Storage token generation** Resolved issue where token generation for Azure Storage resulted in key errors by implementing OAuth2 V2.0 token generation using new GetOAuth2V2Token job.
 
 ### 25.0.3
 
