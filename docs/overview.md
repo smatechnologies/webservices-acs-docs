@@ -1,7 +1,7 @@
 ---
 title: WebServices ACS overview
 sidebar_label: 'Overview'
-description: "Overview of the ACS WebServices and ACS AzureWebservices connectors, including architecture, job types, and how data is passed between jobs."
+description: "Overview of the ACS Webservices and ACS AzureWebservices connectors, including architecture, job types, and how data is passed between jobs."
 tags:
   - Conceptual
   - Automation Engineer
@@ -10,13 +10,13 @@ tags:
 
 # WebServices ACS overview
 
-ACS WebServices provides direct REST API access to applications without requiring additional component installation. It is part of the ACS (Agentless Connector System) suite of products.
+ACS Webservices provides direct REST API access to applications without requiring additional component installation. It is part of the ACS (Agentless Connector System) suite of products.
 
 ## What is it?
 
-ACS WebServices and ACS AzureWebservices are OpCon connectors that allow you to automate REST API interactions and Azure cloud operations directly from OpCon schedules — without installing an agent on the target system.
+ACS Webservices and ACS AzureWebservices are OpCon connectors that allow you to automate REST API interactions and Azure cloud operations directly from OpCon schedules — without installing an agent on the target system.
 
-- Use ACS WebServices when you need to call generic REST API endpoints for authentication, data retrieval, or submission using GET, POST, PUT, PATCH, or DELETE operations
+- Use ACS Webservices when you need to call generic REST API endpoints for authentication, data retrieval, or submission using GET, POST, PUT, PATCH, or DELETE operations
 - Use ACS AzureWebservices when you need to integrate with Microsoft Azure services such as Azure DevOps, Azure Data Factory, Azure Blob Storage, or Azure Key Vault
 - Use either connector when your target system exposes a REST API but does not support a traditional OpCon agent installation
 
@@ -32,7 +32,7 @@ Agent and job definitions for the ACS environment can only be created or updated
 
 ## Passing data between jobs
 
-The ACS WebServices implementation does not include steps as in the previous WebServices Connector. Each function runs as a separate job. Information is passed between jobs using ACS scoped properties, which are saved as schedule instance properties of the associated schedule instance in the daily tables.
+The ACS Webservices implementation does not include steps as in the previous WebServices Connector. Each function runs as a separate job. Information is passed between jobs using ACS scoped properties, which are saved as schedule instance properties of the associated schedule instance in the daily tables.
 
 To save data, use the **Response Variables** section to define the variable name and its associated value. The variable name can then be used in the URLs and message bodies of subsequent jobs.
 
@@ -53,6 +53,7 @@ ACS AzureWebservices provides defined integrations with the Microsoft Azure envi
 | Job type | Description |
 |---|---|
 | GetOAuth2Token | Retrieves an OAuth2 token for authenticating subsequent Azure jobs |
+| GetOAuth2V2Token | Retrieves an OAuth2 V2.0 token for Azure Blob Storage jobs |
 | GetPatToken | Creates an Azure DevOps authentication token using a Personal Access Token (PAT) |
 | GetKeyVaultValue | Retrieves secrets, keys, or certificates from Azure Key Vault |
 | RunDevOpsPipeline | Starts an Azure DevOps pipeline and monitors it for completion |
@@ -79,24 +80,24 @@ ACS Webservices provides generic implementations for authentication and standard
 
 | Connector | Latest version |
 |---|---|
-| ACS WebServices | 25.0.2 |
-| ACS AzureWebServices | 25.0.3 |
+| ACS Webservices | 25.0.2 |
+| ACS AzureWebservices | 25.0.4 |
 
 ## FAQs
 
 **Do I need to install an agent on the target system?**
-No. ACS WebServices and ACS AzureWebservices communicate directly with REST API endpoints. No agent installation is required on the target system.
+No. ACS Webservices and ACS AzureWebservices communicate directly with REST API endpoints. No agent installation is required on the target system.
 
 **Where are the connector files installed?**
 On-premises: copy the connector directory to the `\SAM\plugins` directory. Cloud: copy it to the `\Relay\plugins` directory.
 
-**Can I use both ACS WebServices and ACS AzureWebservices in the same schedule?**
+**Can I use both ACS Webservices and ACS AzureWebservices in the same schedule?**
 Yes. Each connector is configured as a separate agent definition in Solution Manager. You can include jobs from both connectors in the same schedule and define dependencies between them.
 
 **How do I pass a token from an authentication job to a subsequent job?**
 Define a **Response Variable** on the authentication job to store the token as a schedule instance property. Reference that property name in the **Header Attributes** field of subsequent jobs.
 
-**Can I mix ACS WebServices jobs with standard OpCon jobs in the same schedule?**
+**Can I mix ACS Webservices jobs with standard OpCon jobs in the same schedule?**
 Yes. ACS jobs run alongside standard OpCon jobs in a schedule. You can define job dependencies between ACS jobs and standard jobs using the standard OpCon dependency configuration.
 
 ## Glossary

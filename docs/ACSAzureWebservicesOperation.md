@@ -65,7 +65,7 @@ The ACS AzureWebservices connection supports the following job types:
 | DownloadBlobStorage | Download a file from Azure Blob Storage |
 | UploadBlobStorage | Upload a file to Azure Blob Storage |
 
-**Authentication dependencies:** Define a GetPatToken job before RunDevOpsPipeline. Define a GetOAuth2Token job before GetKeyVaultValue, RunDataFactoryPipeline, DownloadBlobStorage, or UploadBlobStorage. Set job dependencies so the authentication job runs first. The generated tokens are stored as schedule instance properties or OpCon properties and passed automatically to subsequent jobs.
+**Authentication dependencies:** Define a GetPatToken job before RunDevOpsPipeline. Define a GetOAuth2Token job before GetKeyVaultValue or RunDataFactoryPipeline, and a GetOAuth2V2Token job before DownloadBlobStorage or UploadBlobStorage. Set job dependencies so the authentication job runs first. The generated tokens are stored as schedule instance properties or OpCon properties and passed automatically to subsequent jobs.
 
 ### Prerequisite steps for all job definitions
 
@@ -89,7 +89,7 @@ Continue with the job-type-specific steps in the section below.
 
 ### GetOAuth2Token job
 
-The GetOAuth2Token job retrieves an OAuth2 token and stores it as a schedule instance property or OpCon property for use by subsequent jobs that interact with Azure Data Factory, Key Vault, or Blob Storage.
+The GetOAuth2Token job retrieves an OAuth2 token and stores it as a schedule instance property or OpCon property for use by subsequent jobs that interact with Azure Data Factory or Key Vault. For Blob Storage, use the [GetOAuth2V2Token job](#getoauth2v2token-job).
 
 ![Defining a GetOAuth2Token Master Job](../static/img/azure-ws-getaoauth2token-master-job1.png)
 
@@ -98,11 +98,11 @@ After completing the [prerequisite steps](#prerequisite-steps-for-all-job-defini
 1. In the **Integration** section, confirm required fields (shown in red).
 2. In the **Authentication** section:
    - In the **Url** field, enter the token endpoint URL including the tenant ID (for example, `tenant-id/oauth2/token`).
-   - In the **Clientid** field, enter the client ID from the Azure Application registration.
+   - In the **ClientId** field, enter the client ID from the Azure Application registration.
    - In the **Key** field, enter the key from the Azure Application registration.
-   - In the **Resource** field, enter the storage resource (for example, `https://storage-account.blob.core.windows.net`).
+   - In the **Resource** field, enter the resource (for example, `https://vault.azure.net` for Key Vault).
    - Select **client_credentials** from the **Grant Type** list.
-   - In the **OpCon Property** field, enter the property name where the token will be stored. You can use instance properties if the full path is provided.
+   - In the **OpCon Property Name** field, enter the property name where the token is stored. You can use instance properties if the full path is provided.
 3. In the **Request** section, select **application/x-www-form-urlencoded** from the **Content** list.
 
    ![Defining a GetOAuth2Token Master Job](../static/img/azure-ws-getaoauth2token-master-job2.png)
@@ -125,11 +125,11 @@ After completing the [prerequisite steps](#prerequisite-steps-for-all-job-defini
 1. In the **Integration** section, confirm required fields (shown in red).
 2. In the **Authentication** section:
    - In the **Url** field, enter the token endpoint URL including the tenant ID (for example, `tenant-id/oauth2/v2.0/token`).
-   - In the **Clientid** field, enter the client ID from the Azure Application registration.
+   - In the **ClientId** field, enter the client ID from the Azure Application registration.
    - In the **Key** field, enter the key from the Azure Application registration.
    - In the **Scope** field, enter the storage resource (for example, `https://storage.azure.com/.default`).
    - Select **client_credentials** from the **Grant Type** list.
-   - In the **OpCon Property** field, enter the property name where the token will be stored. You can use instance properties if the full path is provided.
+   - In the **OpCon Property Name** field, enter the property name where the token is stored. You can use instance properties if the full path is provided.
 3. In the **Request** section, select **application/x-www-form-urlencoded** from the **Content** list.
 
    ![Defining a GetOAuth2V2Token Master Job](../static/img/azure-ws-getaoauth2token-master-job2.png)
@@ -152,7 +152,7 @@ After completing the [prerequisite steps](#prerequisite-steps-for-all-job-defini
 1. In the **Integration Selection** section, select the ACS AzureWebservices connection.
 2. In the **Authentication** section:
    - Enter the PAT retrieved from Azure DevOps. For instructions on creating a PAT, see the [Microsoft documentation](https://learn.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate?view=azure-devops&tabs=Windows).
-   - In the **OpCon Property** field, enter the property name where the token will be stored. You can use instance properties if the full path is provided.
+   - In the **OpCon Property Name** field, enter the property name where the token is stored. You can use instance properties if the full path is provided.
 3. (Optional) If not using OpCon properties, in the **Response Variable** section, enter the variable in the format `name=value` where `name` is the schedule instance property name.
 4. Select **Save**. The GetPatToken job is added to the schedule.
 
@@ -177,7 +177,7 @@ After completing the [prerequisite steps](#prerequisite-steps-for-all-job-defini
    - If the type is **key** or **certificate**, select the attribute to return from the **Attribute** field:
      - Key attributes: `Key.kid`, `Key.kty`, `Key.D`, `Key.Dp`, `Key.Dq`, `Key.E`, `Key.K`, `Key.N`, `Key.P`, `Key.Q`, `Key.Qi`, `Key.X`, `Key.Y`
      - Certificate attributes: `Cert.kid`, `Cert.sid`, `Cert.x5t`, `Cert.cer`
-   - In the **OpCon Property** field, enter the property name where the retrieved value will be stored.
+   - In the **OpCon Property Name** field, enter the property name where the retrieved value is stored.
    - In **Header Attributes**, enter `Authorization=name` where `name` is the OpCon property name or response variable name that contains the OAuth2 token.
 3. Select **Save**. The GetKeyVaultValue job is added to the schedule.
 
@@ -221,12 +221,12 @@ After completing the [prerequisite steps](#prerequisite-steps-for-all-job-defini
 
 1. In the **Integration Selection** section, select the ACS AzureWebservices connection.
 2. In the **Job Configuration** section (required fields shown in red):
-   - In the **Data Factory Url** field, enter `management.azure.com/subscription`.
+   - In the **Data Factory Url** field, enter `management.azure.com/subscriptions`.
    - In the **Subscription** field, enter the Azure subscription ID.
    - In the **Resource Group Name** field, enter the resource group where the Data Factory is defined.
    - In the **Data Factory Name** field, enter the Data Factory name.
    - In the **Pipeline Name** field, enter the pipeline name to run.
-   - (Optional) In **Pipeline Runid**, enter a run ID to re-run a specific previous execution.
+   - (Optional) In **Pipeline Runid**, enter a run ID to re-run a specific previous run.
    - (Optional) In the **Run Parameters** section, enter a name and values to pass as run parameters. Select **+Add Item** to add additional parameters.
 3. In the **Request** section:
    - Select **application/json** from the **Content** list.
@@ -289,11 +289,14 @@ After completing the [prerequisite steps](#prerequisite-steps-for-all-job-defini
 **Which authentication job do I need before running a DevOps pipeline?**
 Define a GetPatToken job and set a job dependency from the RunDevOpsPipeline job to the GetPatToken job. The PAT token must be available as a schedule instance property or OpCon property before RunDevOpsPipeline runs.
 
-**Which authentication job do I need before running a Data Factory pipeline, accessing Key Vault, or using Blob Storage?**
+**Which authentication job do I need before running a Data Factory pipeline or accessing Key Vault?**
 Define a GetOAuth2Token job and set a job dependency from the downstream job to the GetOAuth2Token job. The OAuth2 token must be available before the subsequent job runs.
 
+**Which authentication job do I need before using Blob Storage?**
+Define a GetOAuth2V2Token job and set a job dependency from the DownloadBlobStorage or UploadBlobStorage job to it.
+
 **How do I store a token for use across multiple jobs?**
-Enter a property name in the **OpCon Property** field of the GetOAuth2Token or GetPatToken job to store the token as an OpCon property accessible across schedules. Alternatively, use **Response Variable** to store it as a schedule instance property scoped to the current schedule run.
+Enter a property name in the **OpCon Property Name** field of the GetOAuth2Token or GetPatToken job to store the token as an OpCon property accessible across schedules. Alternatively, use **Response Variable** to store it as a schedule instance property scoped to the current schedule run.
 
 **What value do I enter in the Azure Url field for a RunDevOpsPipeline job?**
 Enter `dev.azure.com` in the **Azure Url** field.

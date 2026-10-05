@@ -35,7 +35,7 @@ To define an ACS Webservices batch user, complete the following steps:
 3. From the **Security** menu, select **Batch Users**.
 4. Select **+Add**.
 5. Select **ACS Webservices** from the **Select the target OS** list.
-6. In the **Identifier** field, enter the user name that will be used to create the token.
+6. In the **Identifier** field, enter the user name used to create the token.
 7. In the **Password** and **Confirm** fields, enter the password of the defined API user.
 8. Select **Save**. The batch user is created and available for selection in BASICTOKEN and OPCONTOKEN job definitions.
 
@@ -60,6 +60,7 @@ To define the ACS Webservices connection, complete the following steps:
    - In the **OpCon URL** field, enter the full URL for the associated OpCon REST API server.
    - In the **OpCon Token** field, enter a valid OpCon application token for authenticating internal OpCon REST API requests.
    - In the **Proxy Url** field, enter the full URL of the proxy server if required.
+   - In the **Retain Log Files** field, enter the number of days to keep log files (for example, `30`).
 6. Select **Save**.
 7. Select **Communications Settings**, set **Requires XML Escape Sequences:User-Defined** to **True**, then select **Save**.
 8. Select the **Change Communication Status** button and select **Enable Full Comm.**
@@ -113,7 +114,7 @@ After completing the [prerequisite steps](#prerequisite-steps-for-all-job-defini
 
 1. In the **Integration Selection** section, select the ACS Webservices connection.
 2. In the **Authentication** section, select a batch user from the list.
-3. In the **Response Variable** section, enter the variable that will contain the token. Use the format `name=value` where `name` is the schedule instance property name (the value is ignored).
+3. In the **Response Variable** section, enter the variable that contains the token. Use the format `name=value` where `name` is the schedule instance property name (the value is ignored).
 4. Select **Save**. The BASICTOKEN job is added to the schedule.
 
 ---
@@ -146,20 +147,21 @@ The OAUTH2TOKEN job retrieves an OAuth2 token and sets it as a schedule instance
 
 After completing the [prerequisite steps](#prerequisite-steps-for-all-job-definitions) and selecting **OAUTH2TOKEN** as the task type:
 
-1. In the **Integration Selection** section, select the ACS Webservices connection. In the **URL** field, enter the full endpoint address using global properties (for example, `https://login.microsoftonline.com/[[tenantid]]/oauth2/token`).
-2. In the **Authentication** section:
+1. In the **Integration Selection** section, select the ACS Webservices connection.
+2. In the **URL** field at the top of the task configuration, enter the full endpoint address using global properties (for example, `https://login.microsoftonline.com/[[tenantid]]/oauth2/token`).
+3. In the **Authentication** section:
    - In the **ClientId** field, enter the client ID (use an encrypted global property to protect this value).
-   - In the **KeyId** field, enter the key (use an encrypted global property to protect this value).
-   - In the **Resource** field, enter the authentication resource (for example, `https://[[dataserver]].blob.storage.net` for Azure Storage).
+   - In the **Key** field, enter the key (use an encrypted global property to protect this value).
+   - In the **Resource** field, enter the authentication resource (for example, `https://[[dataserver]].blob.core.windows.net` for Azure Storage).
    - Select **client_credentials** from the **Grant Type** list.
 
    ![Defining an OAUTH2TOKEN Master Job](../static/img/ws-oauth2token-master-job2.png)
 
-3. In the **Request** section, select **application/x-wwww-form-urlencoded** from the **Content** list.
-4. In the **Response** section:
+4. In the **Request** section, select **application/x-www-form-urlencoded** from the **Content** list.
+5. In the **Response** section:
    - Select **application/json** from the **Content** list.
    - In **Response Variables**, enter a variable in the format `variable-name=jsonpath` (for example, `oauthToken=$.id`). The JPath value is ignored — the connector uses `access_token` by default.
-5. Select **Save**. The OAUTH2TOKEN job is added to the schedule.
+6. Select **Save**. The OAUTH2TOKEN job is added to the schedule.
 
 ---
 
@@ -188,6 +190,7 @@ After completing the [prerequisite steps](#prerequisite-steps-for-all-job-defini
 4. In the **Response** section, select **application/json** from the **Content** list.
 5. (Optional) In the **Completion** section, configure how the job determines success or failure:
    - Select **Poll** to check the result repeatedly rather than once.
+   - (Optional) In the **Filename** field, enter the name of a file to write the returned data into.
    - In the **Attribute** field, enter the JPath expression for the attribute to check (for example, `$.result.message`).
    - In **Good Result**, enter values that indicate success, separated by `/` (for example, `Success/Complete`).
    - In **Bad Result**, enter values that indicate failure, separated by `/` (for example, `Error/Failed`).
@@ -336,7 +339,7 @@ The connection must already be defined as an agent in Solution Manager before yo
 
 **ACS Webservices** — An OpCon connector that enables jobs to make HTTP requests to remote REST APIs from within an OpCon schedule.
 
-**Batch user** — An OpCon user account that provides authentication credentials for job execution. The BASICTOKEN and OPCONTOKEN job types use batch users to generate encoded authentication strings.
+**Batch user** — An OpCon user account that provides authentication credentials for jobs. The BASICTOKEN and OPCONTOKEN job types use batch users to generate encoded authentication strings.
 
 **BASICTOKEN** — A job type that generates a base64 encoded authentication token from an ACS Webservices batch user and stores it as a schedule instance property.
 
